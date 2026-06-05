@@ -1,0 +1,93 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.VoidVault.name",
+    "Description": "server.items.VoidVault.description"
+  },
+  "PlayerAnimationsId": "Block",
+  "Categories": [
+    "Furniture.Containers"
+  ],
+  "Set": "Furniture_Adventure",
+  "Icon": "Icons/ItemsGenerated/VoidVault.png",
+  "Recipe": {
+    "TimeSeconds": 5.0,
+    "Input": [
+      {
+        "ItemId": "Ingredient_Voidheart",
+        "Quantity": 4
+      },
+      {
+        "ItemId": "Ingredient_Void_Essence",
+        "Quantity": 20
+      },
+      {
+        "ItemId": "Ingredient_Bar_Adamantite",
+        "Quantity": 1
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Id": "Workbench",
+        "Type": "Crafting",
+        "Categories": [
+          "Workbench_Survival"
+        ],
+        "RequiredTierLevel": 3
+      }
+    ]
+  },
+  "BlockType": {
+    "BlockParticleSetId": "Wood",
+    "BlockSoundSetId": "Wood",
+    "CustomModel": "Blocks/Dungeons/Chest_Epic_Small.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Resources/Chests/VoidVault.png",
+        "Weight": 1
+      }
+    ],
+    "DrawType": "Model",
+    "Flags": {
+      "IsUsable": true
+    },
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Woods"
+      }
+    },
+    "HitboxType": "Full",
+    "Material": "Solid",
+    "Opacity": "Transparent",
+    "ParticleColor": "#8A2BE2",
+    "State": {
+      "Id": "container",
+      "Capacity": 63,
+      "Definitions": {
+        "CloseWindow": {
+          "InteractionSoundEventId": "SFX_Chest_Wooden_Close",
+          "CustomModelAnimation": "Blocks/Animations/Chest/Chest_Close.blockyanim"
+        },
+        "OpenWindow": {
+          "InteractionSoundEventId": "SFX_Chest_Wooden_Open",
+          "CustomModelAnimation": "Blocks/Animations/Chest/Chest_Open.blockyanim"
+        }
+      }
+    },
+    "VariantRotation": "NESW",
+    "Interactions": {
+      "Use": "Open_Container"
+    },
+    "AllowsMultipleUsers": true
+  },
+  "Tags": {
+    "Type": [
+      "Furniture"
+    ],
+    "Family": [
+      "Dungeon"
+    ]
+  },
+  "ItemSoundSetId": "ISS_Blocks_Wood",
+  "ItemLevel": 10,
+  "MaxStack": 64
+}

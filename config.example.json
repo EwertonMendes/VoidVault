@@ -1,0 +1,121 @@
+{
+  "configVersion": "1",
+  "database": {
+    "type": "sqlite",
+    "file": "mods/VoidVault/voidvault.db"
+  },
+  "commands": {
+    "primary": "voidvault",
+    "aliases": [
+      "vv"
+    ],
+    "usePermission": "voidvault.use",
+    "adminPermission": "voidvault.admin",
+    "reloadPermission": "voidvault.admin.reload",
+    "importPermission": "voidvault.admin.import"
+  },
+  "slots": {
+    "defaultSlots": 9,
+    "maxSlots": 63,
+    "allowOverflow": true,
+    "tiers": [
+      {
+        "id": "vip1",
+        "slots": 18,
+        "permission": "voidvault.slots.vip1",
+        "luckPermsGroups": [
+          "vip1"
+        ]
+      },
+      {
+        "id": "vip2",
+        "slots": 27,
+        "permission": "voidvault.slots.vip2",
+        "luckPermsGroups": [
+          "vip2"
+        ]
+      },
+      {
+        "id": "vip3",
+        "slots": 36,
+        "permission": "voidvault.slots.vip3",
+        "luckPermsGroups": [
+          "vip3"
+        ]
+      },
+      {
+        "id": "vip4",
+        "slots": 54,
+        "permission": "voidvault.slots.vip4",
+        "luckPermsGroups": [
+          "vip4"
+        ]
+      },
+      {
+        "id": "vip5",
+        "slots": 63,
+        "permission": "voidvault.slots.vip5",
+        "luckPermsGroups": [
+          "vip5"
+        ]
+      },
+      {
+        "id": "legacy_endervip",
+        "slots": 27,
+        "permission": "enderchests.vip",
+        "luckPermsGroups": []
+      },
+      {
+        "id": "legacy_endervip_plus",
+        "slots": 54,
+        "permission": "enderchests.vip+",
+        "luckPermsGroups": []
+      },
+      {
+        "id": "legacy_endervip5",
+        "slots": 63,
+        "permission": "enderchests.vip5",
+        "luckPermsGroups": []
+      }
+    ]
+  },
+  "crafting": {
+    "enabled": true,
+    "timeSeconds": 5.0,
+    "input": [
+      {
+        "itemId": "Ingredient_Voidheart",
+        "quantity": 4
+      },
+      {
+        "itemId": "Ingredient_Void_Essence",
+        "quantity": 20
+      },
+      {
+        "itemId": "Ingredient_Bar_Adamantite",
+        "quantity": 1
+      }
+    ],
+    "benchRequirement": {
+      "id": "Workbench",
+      "type": "Crafting",
+      "categories": [
+        "Workbench_Survival"
+      ],
+      "requiredTierLevel": 3
+    }
+  },
+  "importer": {
+    "legacyDatabasePath": "mods/kvothe_EnderChest/enderchest.db",
+    "legacyJsonDirectory": "mods/kvothe_EnderChest/ender_chest_data",
+    "skipEmptyVaults": false,
+    "overwriteExisting": false,
+    "createBackupBeforeConfirm": true
+  },
+  "safety": {
+    "preventDoubleOpen": true,
+    "saveOnEveryChange": true,
+    "saveOnClose": true,
+    "saveOnShutdown": true
+  }
+}

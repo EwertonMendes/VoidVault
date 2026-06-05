@@ -1,0 +1,23 @@
+{
+  "Group": "dev.voidvault",
+  "Name": "VoidVault",
+  "Version": "1.0.0",
+  "Description": "A cross-dimensional personal vault with SQLite storage, configurable slot tiers and an EnderChest migration tool.",
+  "ServerVersion": "*",
+  "Authors": [
+    {
+      "Name": "Ewerton Mendes"
+    },
+    {
+      "Name": "VoidVault contributors"
+    }
+  ],
+  "Dependencies": {},
+  "OptionalDependencies": {
+    "LuckPerms:LuckPerms": "*"
+  },
+  "LoadBefore": {},
+  "DisabledByDefault": false,
+  "IncludesAssetPack": true,
+  "Main": "dev.voidvault.VoidVaultPlugin"
+}
