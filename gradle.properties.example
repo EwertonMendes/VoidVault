@@ -1,4 +1,0 @@
-# Point this to your local Hytale installation folder that contains the server/game jars.
-# Example:
-# hytale.home_path=C:\\Users\\YourUser\\AppData\\Roaming\\Hytale
-hytale.home_path=C:\\Path\\To\\Hytale
