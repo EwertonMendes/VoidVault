@@ -1,4 +1,4 @@
-package dev.voidvault.config;
+package tblack.voidvault.config;
 
 import java.util.ArrayList;
 import java.util.List;

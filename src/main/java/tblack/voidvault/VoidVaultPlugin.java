@@ -1,16 +1,16 @@
-package dev.voidvault;
+package tblack.voidvault;
 
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
-import dev.voidvault.commands.VoidVaultCommand;
-import dev.voidvault.config.ConfigManager;
-import dev.voidvault.config.VoidVaultConfig;
-import dev.voidvault.importer.EnderChestImporter;
-import dev.voidvault.permissions.PermissionService;
-import dev.voidvault.storage.DatabaseService;
-import dev.voidvault.storage.VaultManager;
-import dev.voidvault.systems.VoidVaultUseBlockSystem;
-import dev.voidvault.util.CraftingRecipeService;
+import tblack.voidvault.commands.VoidVaultCommand;
+import tblack.voidvault.config.ConfigManager;
+import tblack.voidvault.config.VoidVaultConfig;
+import tblack.voidvault.importer.EnderChestImporter;
+import tblack.voidvault.permissions.PermissionService;
+import tblack.voidvault.storage.DatabaseService;
+import tblack.voidvault.storage.VaultManager;
+import tblack.voidvault.systems.VoidVaultUseBlockSystem;
+import tblack.voidvault.util.CraftingRecipeService;
 
 import javax.annotation.Nonnull;
 
@@ -63,7 +63,7 @@ public class VoidVaultPlugin extends JavaPlugin {
             }
         }));
 
-        System.out.println("[VoidVault] Loaded VoidVault " + currentConfig.configVersion);
+        System.out.println("[VoidVault] Loaded VoidVault " + getManifest().getVersion());
     }
 
     public void reloadVoidVault() {

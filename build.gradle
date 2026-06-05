@@ -1,14 +1,35 @@
 plugins {
     id 'java'
-    id 'com.gradleup.shadow' version '9.3.0'
+    id 'com.gradleup.shadow' version '9.3.1'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.8'
 }
 
-group = 'dev.voidvault'
-version = '1.0.0'
+import org.gradle.internal.os.OperatingSystem
 
-base {
-    archivesName = 'voidvault'
+def userHome = System.getProperty('user.home')
+def hytaleHome = ''
+
+if (project.hasProperty('hytale_home')) {
+    hytaleHome = project.findProperty('hytale_home').toString()
+} else {
+    def os = OperatingSystem.current()
+    if (os.isWindows()) {
+        hytaleHome = "${userHome}/AppData/Roaming/Hytale"
+    } else if (os.isMacOsX()) {
+        hytaleHome = "${userHome}/Library/Application Support/Hytale"
+    } else {
+        hytaleHome = "${userHome}/.local/share/Hytale"
+    }
 }
+
+hytaleHome = hytaleHome.replace('\\', '/')
+
+group = project.findProperty('maven_group')?.toString() ?: 'tblack.voidvault'
+version = project.findProperty('version')?.toString() ?: '0.1.0'
+
+def patchline = (project.findProperty('patchline') ?: 'release').toString()
+def gameDir = "${hytaleHome}/install/${patchline}/package/game/latest"
+def serverJarPath = (project.findProperty('server_jar') ?: "${gameDir}/Server/HytaleServer.jar").toString()
 
 java {
     toolchain {
@@ -18,50 +39,87 @@ java {
 
 repositories {
     mavenCentral()
-    maven {
-        name = 'hytale'
-        url = uri('https://maven.hytale.com/release')
-    }
+}
+
+configurations {
+    shade
+    implementation.extendsFrom(shade)
 }
 
 dependencies {
-    // Hytale API/classes. This is compileOnly so the server JAR is not bundled inside the plugin.
-    compileOnly 'com.hypixel.hytale:Server:+'
+    compileOnly files(serverJarPath)
     compileOnly 'org.joml:joml:1.10.8'
+    compileOnly 'org.checkerframework:checker-qual:3.42.0'
 
-    // Optional local fallback. If you prefer compiling against your local installation,
-    // set hytale.home_path in gradle.properties.
-    def hytaleHome = findProperty('hytale.home_path')
-    if (hytaleHome != null && !hytaleHome.toString().isBlank()) {
-        compileOnly fileTree(dir: hytaleHome.toString(), include: ['**/*.jar'])
-    }
-
-    implementation 'org.xerial:sqlite-jdbc:3.50.3.0'
-    implementation 'com.google.code.gson:gson:2.11.0'
-    implementation 'org.mongodb:bson:5.2.1'
-    implementation 'org.slf4j:slf4j-nop:2.0.16'
+    shade 'org.xerial:sqlite-jdbc:3.50.3.0'
+    shade 'com.google.code.gson:gson:2.13.1'
+    shade 'org.mongodb:bson:5.2.1'
+    shade 'org.slf4j:slf4j-nop:2.0.16'
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs += ['--enable-preview']
 }
 
 tasks.named('processResources') {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-// We only want the shadowed JAR because SQLite/Gson must be bundled with the mod.
 tasks.named('jar') {
     enabled = false
 }
 
-tasks.named('shadowJar') {
-    archiveBaseName.set('voidvault')
+shadowJar {
+    archiveBaseName.set(rootProject.name)
     archiveClassifier.set('')
+    configurations = [project.configurations.shade]
     mergeServiceFiles()
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 }
 
-tasks.named('build') {
-    dependsOn tasks.named('shadowJar')
+tasks.build {
+    dependsOn(shadowJar)
+}
+
+tasks.register('runServer', JavaExec) {
+    group = 'hytale'
+    description = 'Launch the Hytale server with VoidVault loaded.'
+
+    dependsOn(shadowJar)
+    standardInput = System.in
+    classpath = files(serverJarPath)
+    mainClass.set('com.hypixel.hytale.Main')
+
+    def runDir = file("$projectDir/run")
+    def modsDir = file("$runDir/run_mods")
+
+    doFirst {
+        if (!runDir.exists()) runDir.mkdirs()
+        if (!modsDir.exists()) modsDir.mkdirs()
+        modsDir.listFiles()?.each { it.delete() }
+        copy {
+            from(shadowJar.archiveFile)
+            into(modsDir)
+        }
+        println "MOD JAR copied to: ${modsDir.absolutePath}"
+    }
+
+    workingDir = runDir
+
+    def assetsPath = "${gameDir}/Assets.zip"
+
+    args = [
+        '--allow-op',
+        '--disable-sentry',
+        "--assets=${assetsPath}",
+        "--mods=${modsDir.absolutePath}"
+    ]
+
+    jvmArgs = [
+        '--enable-preview',
+        '--enable-native-access=ALL-UNNAMED',
+        '-Xmx2G',
+        '-Dfile.encoding=UTF-8'
+    ]
 }

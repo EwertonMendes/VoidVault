@@ -1,4 +1,4 @@
-package dev.voidvault.config;
+package tblack.voidvault.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

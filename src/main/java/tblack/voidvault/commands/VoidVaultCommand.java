@@ -1,4 +1,4 @@
-package dev.voidvault.commands;
+package tblack.voidvault.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -14,11 +14,11 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import dev.voidvault.VoidVaultPlugin;
-import dev.voidvault.config.VoidVaultConfig;
-import dev.voidvault.importer.EnderChestImporter;
-import dev.voidvault.model.ImportReport;
-import dev.voidvault.util.Chat;
+import tblack.voidvault.VoidVaultPlugin;
+import tblack.voidvault.config.VoidVaultConfig;
+import tblack.voidvault.importer.EnderChestImporter;
+import tblack.voidvault.model.ImportReport;
+import tblack.voidvault.util.Chat;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;

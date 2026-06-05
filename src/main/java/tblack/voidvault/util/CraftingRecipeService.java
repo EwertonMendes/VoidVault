@@ -1,6 +1,6 @@
-package dev.voidvault.util;
+package tblack.voidvault.util;
 
-import dev.voidvault.config.VoidVaultConfig;
+import tblack.voidvault.config.VoidVaultConfig;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

@@ -1,6 +1,6 @@
 # VoidVault
 
-VoidVault is an open-source Hytale mod that adds a cross-dimensional personal vault for each player.
+VoidVault is a source-available Hytale server mod that adds a cross-dimensional personal vault for each player.
 
 It provides a physical craftable vault block, player-bound SQLite storage, configurable slot tiers, LuckPerms-compatible permission checks, and an in-game migration path from EnderChest mod.
 
@@ -8,26 +8,34 @@ The project is designed to be easy to maintain, fork, and contribute to, while k
 
 ## Project goals
 
-* Provide a reliable personal vault system for Hytale servers.
-* Offer a clean migration path from the legacy EnderChest mod (and maybe other mods).
-* Keep player data safe during imports, reloads, shutdowns, and slot-tier changes.
-* Support both small servers and larger servers with permission-based slot tiers.
-* Keep the codebase approachable for contributors.
+- Provide a reliable personal vault system for Hytale servers.
+- Offer a clean migration path from the legacy EnderChest mod.
+- Keep player data safe during imports, reloads, shutdowns, and slot-tier changes.
+- Support both small servers and larger servers with permission-based slot tiers.
+- Keep the codebase approachable for contributors.
+
+## Current version
+
+```txt
+0.1.0
+```
 
 ## Current features
 
-* `/vv` and `/voidvault` command roots.
-* Physical craftable `Void Vault` block.
-* SQLite storage by default.
-* Configurable visible slot tiers.
-* LuckPerms-compatible permission and group checks.
-* Admin reload command.
-* Admin inspect command.
-* In-game EnderChest importer.
-* Overflow-safe migration for slots above a player's current visible limit.
-* Runtime config reload.
-* Configurable crafting enable/disable flag.
-* Build-ready Gradle project with ShadowJar.
+- `/vv` and `/voidvault` command roots.
+- Physical craftable `Void Vault` block.
+- Custom VoidVault opening sound.
+- SQLite storage by default.
+- Configurable visible slot tiers.
+- LuckPerms-compatible permission and group checks.
+- Admin reload command.
+- Admin inspect command.
+- In-game EnderChest importer.
+- Overflow-safe migration for slots above a player's current visible limit.
+- Runtime config reload.
+- Configurable crafting enable/disable flag.
+- Build-ready Gradle project with ShadowJar.
+- Local `runServer` Gradle task for development servers.
 
 ## Command tree
 
@@ -40,45 +48,6 @@ The project is designed to be easy to maintain, fork, and contribute to, while k
 /voidvault reload
 /voidvault import enderchest
 ```
-
-### Command behavior
-
-```txt
-/vv
-/voidvault
-```
-
-Opens your own VoidVault.
-
-```txt
-/voidvault help
-```
-
-Shows the available commands.
-
-```txt
-/voidvault overflow
-```
-
-Shows how many hidden item slots are stored above your current visible slot limit.
-
-```txt
-/voidvault open <player|uuid>
-```
-
-Admin command. Opens another player's VoidVault.
-
-```txt
-/voidvault reload
-```
-
-Admin command. Reloads `mods/VoidVault/config.json`.
-
-```txt
-/voidvault import enderchest
-```
-
-Admin command. Imports data from the legacy EnderChest database configured in `config.json`.
 
 ## Permissions
 
@@ -151,7 +120,7 @@ importer
 safety
 ```
 
-### Slot overflow behavior
+## Slot overflow behavior
 
 VoidVault does not delete items when a player has fewer visible slots than the amount of data stored.
 
@@ -177,17 +146,6 @@ When `crafting.enabled` is set to `false`, VoidVault attempts to disable the rec
 
 Hytale loads the actual recipe ingredients from the item asset JSON, so ingredient changes should be synced before building the jar:
 
-```bash
-python tools/sync_crafting_config.py config.example.json
-./gradlew build
-```
-
-The item asset is located at:
-
-```txt
-src/main/resources/Server/Item/Items/Furniture/Metal/VoidVault.json
-```
-
 ## Migration from EnderChest
 
 VoidVault can import data from EnderChest mod.
@@ -212,14 +170,14 @@ Run the import in-game:
 
 VoidVault will:
 
-* Read legacy EnderChest player vaults.
-* Import valid inventory data into `mods/VoidVault/voidvault.db`.
-* Preserve legacy slot indexes.
-* Keep overflow items stored safely.
-* Skip non-empty VoidVault records unless overwrite behavior is enabled.
-* Overwrite empty `{}` records created before migration.
-* Generate import reports under `mods/VoidVault/reports/`.
-* Create a backup before confirmed imports when `createBackupBeforeConfirm` is enabled.
+- Read legacy EnderChest player vaults.
+- Import valid inventory data into `mods/VoidVault/voidvault.db`.
+- Preserve legacy slot indexes.
+- Keep overflow items stored safely.
+- Skip non-empty VoidVault records unless overwrite behavior is enabled.
+- Overwrite empty `{}` records created before migration.
+- Generate import reports under `mods/VoidVault/reports/`.
+- Create a backup before confirmed imports when `createBackupBeforeConfirm` is enabled.
 
 ## Legacy EnderChest database format
 
@@ -273,17 +231,17 @@ The `inventory_data` format is intentionally close to the legacy EnderChest form
 
 ## Development requirements
 
-* JDK 25
-* Gradle Wrapper included in the project
-* A local Hytale server/modding environment
-* Optional: LuckPerms installed on the test server
+- JDK 25
+- Gradle Wrapper script included in the project
+- A local Hytale server/modding environment
+- Optional: LuckPerms installed on the test server
 
 The project uses:
 
-* Hytale server API as `compileOnly`
-* SQLite JDBC bundled through ShadowJar
-* Gson bundled through ShadowJar
-* BSON bundled through ShadowJar
+- Hytale server API as `compileOnly`
+- SQLite JDBC bundled through ShadowJar
+- Gson bundled through ShadowJar
+- BSON bundled through ShadowJar
 
 ## Build
 
@@ -303,16 +261,35 @@ On Linux/macOS:
 The generated mod jar is:
 
 ```txt
-build/libs/voidvault-1.0.0.jar
+build/libs/VoidVault-x.x.x.jar
 ```
 
-For IntelliJ's Hytale Server run configuration, use:
+## Local runServer task
+
+The project includes a `runServer` Gradle task based on the standard Hytale install layout.
+
+By default, it uses the local Hytale installation for the selected patchline:
 
 ```txt
-Build task: shadowJar
-Plugin JAR: build/libs/voidvault-1.0.0.jar
-Plugin name: dev.voidvault:VoidVault
+<user home>/AppData/Roaming/Hytale/install/release/package/game/latest/Server/HytaleServer.jar
+<user home>/AppData/Roaming/Hytale/install/release/package/game/latest/Assets.zip
 ```
+
+Then run:
+
+```bash
+./gradlew runServer
+```
+
+You can override the paths in `gradle.properties`:
+
+```properties
+hytale_home=C:/Users/YOUR_USER/AppData/Roaming/Hytale
+patchline=release
+server_jar=C:/Path/To/HytaleServer.jar
+```
+
+The task builds the shaded jar, copies it to `run/run_mods`, and starts the server with `--allow-op`, `--disable-sentry`, `--assets`, and `--mods`.
 
 ## Local testing checklist
 
@@ -329,20 +306,21 @@ After building and copying the jar to your test server:
 
 Recommended manual tests:
 
-* Open your own vault with `/vv`.
-* Place and use the physical Void Vault block.
-* Add items, close the vault, restart the server, and confirm items persist.
-* Test different slot tiers.
-* Test LuckPerms group-based slot tiers.
-* Import a copy of an EnderChest database.
-* Confirm overflow items are preserved.
-* Confirm admin inspect works.
-* Confirm `reload` applies config changes.
+- Open your own vault with `/vv`.
+- Place and use the physical Void Vault block.
+- Confirm the custom open sound plays when opening the physical block.
+- Add items, close the vault, restart the server, and confirm items persist.
+- Test different slot tiers.
+- Test LuckPerms group-based slot tiers.
+- Import a copy of an EnderChest database.
+- Confirm overflow items are preserved.
+- Confirm admin inspect works.
+- Confirm `reload` applies config changes.
 
 ## Project structure
 
 ```txt
-src/main/java/dev/voidvault/
+src/main/java/tblack/voidvault/
   commands/      Command registration and command handlers
   config/        Config loading and normalization
   importer/      Legacy EnderChest import logic
@@ -362,17 +340,6 @@ src/main/resources/
 
 Contributions are welcome.
 
-Good first contribution areas:
-
-* Improve command UX.
-* Add better migration reports.
-* Add automated tests for JSON import behavior.
-* Improve database safety.
-* Add PostgreSQL support.
-* Improve config validation.
-* Improve the Void Vault asset pack.
-* Add localization files.
-
 Before opening a pull request:
 
 1. Keep the project buildable with `./gradlew clean build`.
@@ -388,27 +355,12 @@ VoidVault should be conservative with player data.
 
 When in doubt:
 
-* Preserve data instead of deleting it.
-* Log migration problems.
-* Skip unsafe writes.
-* Keep backups before destructive operations.
-* Keep old slot indexes intact.
-* Avoid hard dependencies on optional plugins.
-
-## Release checklist
-
-Before publishing a release:
-
-1. Build with `./gradlew clean build`.
-2. Test the generated jar on a clean server.
-3. Test the generated jar on a server with existing `mods/VoidVault/config.json`.
-4. Test `/vv`.
-5. Test the physical block.
-6. Test `/voidvault import enderchest` using a copied legacy database.
-7. Confirm `mods/VoidVault/reports/` is generated.
-8. Confirm `mods/VoidVault/voidvault.db` contains the migrated data.
-9. Confirm overflow behavior works.
-10. Confirm the final jar is `build/libs/voidvault-x.x.x.jar`.
+- Preserve data instead of deleting it.
+- Log migration problems.
+- Skip unsafe writes.
+- Keep backups before destructive operations.
+- Keep old slot indexes intact.
+- Avoid hard dependencies on optional plugins.
 
 ## License
 

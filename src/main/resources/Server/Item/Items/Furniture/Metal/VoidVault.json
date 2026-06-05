@@ -68,7 +68,7 @@
           "CustomModelAnimation": "Blocks/Animations/Chest/Chest_Close.blockyanim"
         },
         "OpenWindow": {
-          "InteractionSoundEventId": "SFX_Chest_Wooden_Open",
+          "InteractionSoundEventId": "SFX_Chest_VoidVault_Open",
           "CustomModelAnimation": "Blocks/Animations/Chest/Chest_Open.blockyanim"
         }
       }

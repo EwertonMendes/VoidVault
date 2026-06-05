@@ -1,4 +1,4 @@
-package dev.voidvault.util;
+package tblack.voidvault.util;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;

@@ -1,4 +1,4 @@
-package dev.voidvault.model;
+package tblack.voidvault.model;
 
 import java.util.ArrayList;
 import java.util.List;

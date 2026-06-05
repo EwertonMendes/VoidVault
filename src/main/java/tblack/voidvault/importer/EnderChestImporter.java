@@ -1,12 +1,12 @@
-package dev.voidvault.importer;
+package tblack.voidvault.importer;
 
 import com.google.gson.JsonSyntaxException;
-import dev.voidvault.config.ConfigManager;
-import dev.voidvault.config.VoidVaultConfig;
-import dev.voidvault.model.ImportReport;
-import dev.voidvault.model.SavedItem;
-import dev.voidvault.storage.DatabaseService;
-import dev.voidvault.util.VaultJson;
+import tblack.voidvault.config.ConfigManager;
+import tblack.voidvault.config.VoidVaultConfig;
+import tblack.voidvault.model.ImportReport;
+import tblack.voidvault.model.SavedItem;
+import tblack.voidvault.storage.DatabaseService;
+import tblack.voidvault.util.VaultJson;
 
 import java.io.IOException;
 import java.nio.file.*;

@@ -1,4 +1,4 @@
-package dev.voidvault.storage;
+package tblack.voidvault.storage;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -12,10 +12,10 @@ import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
 import com.hypixel.hytale.server.core.inventory.container.SimpleItemContainer;
 import com.hypixel.hytale.server.core.util.BsonUtil;
-import dev.voidvault.config.VoidVaultConfig;
-import dev.voidvault.model.SavedItem;
-import dev.voidvault.permissions.PermissionService;
-import dev.voidvault.util.VaultJson;
+import tblack.voidvault.config.VoidVaultConfig;
+import tblack.voidvault.model.SavedItem;
+import tblack.voidvault.permissions.PermissionService;
+import tblack.voidvault.util.VaultJson;
 import org.bson.BsonDocument;
 
 import java.sql.SQLException;
@@ -93,10 +93,10 @@ public class VaultManager {
         }
 
         Window window;
-        if (blockType != null && container.getCapacity() == config.slots.maxSlots) {
-            window = new ContainerBlockWindow(x, y, z, rotationIndex, blockType, container);
-        } else {
+        if (blockType == null) {
             window = new ContainerWindow(container);
+        } else {
+            window = new ContainerBlockWindow(x, y, z, rotationIndex, blockType, container);
         }
 
         ItemContainer finalContainer = container;
@@ -123,7 +123,7 @@ public class VaultManager {
                 Integer slot = entry.getKey();
                 SavedItem saved = entry.getValue();
                 if (slot == null || saved == null || !saved.isValid()) continue;
-                if (slot < 0 || slot >= slots) continue;
+                if (slot < 0 || slot >= slots) continue; // overflow remains in DB and appears when slots increase
 
                 ItemStack stack = toItemStack(saved);
                 if (stack != null) {

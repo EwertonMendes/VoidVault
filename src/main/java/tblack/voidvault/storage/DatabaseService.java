@@ -1,6 +1,6 @@
-package dev.voidvault.storage;
+package tblack.voidvault.storage;
 
-import dev.voidvault.config.VoidVaultConfig;
+import tblack.voidvault.config.VoidVaultConfig;
 
 import java.io.IOException;
 import java.nio.file.Files;

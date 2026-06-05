@@ -1,7 +1,7 @@
-package dev.voidvault.permissions;
+package tblack.voidvault.permissions;
 
 import com.hypixel.hytale.server.core.permissions.PermissionsModule;
-import dev.voidvault.config.VoidVaultConfig;
+import tblack.voidvault.config.VoidVaultConfig;
 
 import java.lang.reflect.Method;
 import java.util.Comparator;

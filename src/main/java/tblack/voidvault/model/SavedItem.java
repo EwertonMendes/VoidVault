@@ -1,4 +1,4 @@
-package dev.voidvault.model;
+package tblack.voidvault.model;
 
 /**
  * JSON-compatible item snapshot stored by VoidVault.
