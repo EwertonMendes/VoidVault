@@ -16,6 +16,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import tblack.voidvault.VoidVaultPlugin;
 import tblack.voidvault.config.VoidVaultConfig;
+import tblack.voidvault.i18n.I18n;
 import tblack.voidvault.importer.EnderChestImporter;
 import tblack.voidvault.model.ImportReport;
 import tblack.voidvault.util.Chat;
@@ -27,7 +28,7 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
     private final VoidVaultPlugin plugin;
 
     public VoidVaultCommand(VoidVaultPlugin plugin, VoidVaultConfig config) {
-        super(config.commands.primary, "Open your VoidVault or manage the plugin");
+        super(config.commands.primary, I18n.commandKey("commands.root.description"));
         this.plugin = plugin;
 
         if (config.commands.aliases != null && !config.commands.aliases.isEmpty()) {
@@ -54,13 +55,13 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
                            @Nonnull World world) {
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player == null) {
-            Chat.send(context, Chat.error("Could not resolve your player entity."));
+            Chat.send(context, Chat.error(context, "messages.player_entity_not_found"));
             return;
         }
 
         VoidVaultConfig config = plugin.getCurrentConfig();
         if (!hasCommandPermission(context, config.commands.usePermission)) {
-            Chat.send(context, Chat.error("You don't have permission to use VoidVault."));
+            Chat.send(context, Chat.error(context, "messages.no_permission.use"));
             return;
         }
 
@@ -68,7 +69,7 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
             plugin.getVaultManager().openVault(player, playerRef.getUuid());
         } catch (Exception exception) {
             exception.printStackTrace();
-            Chat.send(context, Chat.error("Failed to open your VoidVault."));
+            Chat.send(context, Chat.error(context, "messages.open_failed.self"));
         }
     }
 
@@ -97,24 +98,24 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
     }
 
     private static void sendHelp(CommandContext context) {
-        Chat.send(context, Chat.title("VoidVault commands"));
-        Chat.send(context, Chat.info("/vv - Open your vault"));
-        Chat.send(context, Chat.info("/voidvault - Open your vault"));
-        Chat.send(context, Chat.info("/voidvault overflow - Check hidden migrated slots"));
-        Chat.send(context, Chat.info("/voidvault open <player|uuid> - Admin inspect"));
-        Chat.send(context, Chat.info("/voidvault reload - Reload config"));
-        Chat.send(context, Chat.info("/voidvault import enderchest - Import legacy EnderChest data"));
+        Chat.send(context, Chat.title(context, "messages.help.title"));
+        Chat.send(context, Chat.info(context, "messages.help.open_alias_vv"));
+        Chat.send(context, Chat.info(context, "messages.help.open_alias_voidvault"));
+        Chat.send(context, Chat.info(context, "messages.help.overflow"));
+        Chat.send(context, Chat.info(context, "messages.help.open_other"));
+        Chat.send(context, Chat.info(context, "messages.help.reload"));
+        Chat.send(context, Chat.info(context, "messages.help.import_enderchest"));
     }
 
     private static void sendImportReport(CommandContext context, ImportReport report) {
-        Chat.send(context, Chat.title("VoidVault import " + (report.dryRun ? "preview" : "complete")));
-        Chat.send(context, Chat.info("Players found: " + report.playersFound));
-        Chat.send(context, Chat.info("Players imported: " + report.playersImported));
-        Chat.send(context, Chat.info("Players skipped: " + report.playersSkipped));
-        Chat.send(context, Chat.info("Players with items: " + report.playersWithItems));
-        Chat.send(context, Chat.info("Stored item slots: " + report.totalItemSlots));
-        Chat.send(context, Chat.info("Players with overflow slots: " + report.overflowPlayers));
-        Chat.send(context, Chat.info("Invalid rows/items: " + report.invalidRows + "/" + report.invalidItems));
+        Chat.send(context, Chat.title(context, report.dryRun ? "messages.import.preview_title" : "messages.import.complete_title"));
+        Chat.send(context, Chat.info(context, "messages.import.players_found", report.playersFound));
+        Chat.send(context, Chat.info(context, "messages.import.players_imported", report.playersImported));
+        Chat.send(context, Chat.info(context, "messages.import.players_skipped", report.playersSkipped));
+        Chat.send(context, Chat.info(context, "messages.import.players_with_items", report.playersWithItems));
+        Chat.send(context, Chat.info(context, "messages.import.stored_item_slots", report.totalItemSlots));
+        Chat.send(context, Chat.info(context, "messages.import.overflow_players", report.overflowPlayers));
+        Chat.send(context, Chat.info(context, "messages.import.invalid_rows_items", report.invalidRows, report.invalidItems));
     }
 
     private static UUID resolveUuid(String target) {
@@ -133,7 +134,7 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
 
     private static class HelpCommand extends CommandBase {
         private HelpCommand(VoidVaultPlugin plugin) {
-            super("help", "Shows VoidVault commands");
+            super("help", I18n.commandKey("commands.help.description"));
         }
 
         @Override
@@ -151,7 +152,7 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
         private final VoidVaultPlugin plugin;
 
         private ReloadCommand(VoidVaultPlugin plugin) {
-            super("reload", "Reloads VoidVault configuration");
+            super("reload", I18n.commandKey("commands.reload.description"));
             this.plugin = plugin;
         }
 
@@ -164,12 +165,12 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
         protected void executeSync(@Nonnull CommandContext context) {
             VoidVaultConfig config = plugin.getCurrentConfig();
             if (!hasCommandPermission(plugin, context, config.commands.reloadPermission)) {
-                Chat.send(context, Chat.error("You don't have permission to reload VoidVault."));
+                Chat.send(context, Chat.error(context, "messages.no_permission.reload"));
                 return;
             }
 
             plugin.reloadVoidVault();
-            Chat.send(context, Chat.ok("VoidVault configuration reloaded."));
+            Chat.send(context, Chat.ok(context, "messages.reload.success"));
         }
     }
 
@@ -177,7 +178,7 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
         private final VoidVaultPlugin plugin;
 
         private OverflowCommand(VoidVaultPlugin plugin) {
-            super("overflow", "Checks hidden migrated slots");
+            super("overflow", I18n.commandKey("commands.overflow.description"));
             this.plugin = plugin;
         }
 
@@ -189,7 +190,7 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
         @Override
         protected void executeSync(@Nonnull CommandContext context) {
             if (!context.isPlayer()) {
-                Chat.send(context, Chat.error("This command can only be used by players."));
+                Chat.send(context, Chat.error(context, "messages.players_only"));
                 return;
             }
 
@@ -198,13 +199,13 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
                 int overflow = plugin.getVaultManager().getOverflowCount(senderUuid);
 
                 if (overflow == 0) {
-                    Chat.send(context, Chat.ok("You have no hidden overflow items."));
+                    Chat.send(context, Chat.ok(context, "messages.overflow.none"));
                 } else {
-                    Chat.send(context, Chat.info("You have " + overflow + " item slots stored above your current visible slot limit. They will appear when you unlock more slots."));
+                    Chat.send(context, Chat.info(context, "messages.overflow.has_items", overflow));
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
-                Chat.send(context, Chat.error("Failed to check overflow."));
+                Chat.send(context, Chat.error(context, "messages.overflow.failed"));
             }
         }
     }
@@ -214,9 +215,9 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
         private final RequiredArg<String> targetArg;
 
         private OpenCommand(VoidVaultPlugin plugin) {
-            super("open", "Opens another player's VoidVault");
+            super("open", I18n.commandKey("commands.open.description"));
             this.plugin = plugin;
-            this.targetArg = withRequiredArg("player", "Player name or UUID", ArgTypes.STRING);
+            this.targetArg = withRequiredArg("player", I18n.commandKey("arguments.player.description"), ArgTypes.STRING);
         }
 
         @Override
@@ -232,36 +233,36 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
                                @Nonnull World world) {
             VoidVaultConfig config = plugin.getCurrentConfig();
             if (!hasCommandPermission(plugin, context, config.commands.adminPermission)) {
-                Chat.send(context, Chat.error("You don't have permission to inspect other VoidVaults."));
+                Chat.send(context, Chat.error(context, "messages.no_permission.inspect"));
                 return;
             }
 
             Player player = store.getComponent(ref, Player.getComponentType());
             if (player == null) {
-                Chat.send(context, Chat.error("Could not resolve your player entity."));
+                Chat.send(context, Chat.error(context, "messages.player_entity_not_found"));
                 return;
             }
 
             String target = targetArg.get(context);
             UUID targetUuid = resolveUuid(target);
             if (targetUuid == null) {
-                Chat.send(context, Chat.error("Player not found. Use an online player name or UUID."));
+                Chat.send(context, Chat.error(context, "messages.player_not_found"));
                 return;
             }
 
             try {
                 plugin.getVaultManager().openVault(player, targetUuid);
-                Chat.send(context, Chat.ok("Opened VoidVault for " + target + "."));
+                Chat.send(context, Chat.ok(context, "messages.open.success_other", target));
             } catch (Exception exception) {
                 exception.printStackTrace();
-                Chat.send(context, Chat.error("Failed to open target VoidVault."));
+                Chat.send(context, Chat.error(context, "messages.open_failed.other"));
             }
         }
     }
 
     private static class ImportCommand extends AbstractCommandCollection {
         private ImportCommand(VoidVaultPlugin plugin) {
-            super("import", "Imports legacy vault data");
+            super("import", I18n.commandKey("commands.import.description"));
             addSubCommand(new EnderChestImportCommand(plugin));
         }
     }
@@ -270,7 +271,7 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
         private final VoidVaultPlugin plugin;
 
         private EnderChestImportCommand(VoidVaultPlugin plugin) {
-            super("enderchest", "Imports data from kvothe EnderChest");
+            super("enderchest", I18n.commandKey("commands.import.enderchest.description"));
             this.plugin = plugin;
         }
 
@@ -283,7 +284,7 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
         protected void executeSync(@Nonnull CommandContext context) {
             VoidVaultConfig config = plugin.getCurrentConfig();
             if (!hasCommandPermission(plugin, context, config.commands.importPermission)) {
-                Chat.send(context, Chat.error("You don't have permission to import legacy EnderChest data."));
+                Chat.send(context, Chat.error(context, "messages.no_permission.import"));
                 return;
             }
 
@@ -305,7 +306,7 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
                     + ", invalidItems=" + report.invalidItems);
 
             if (!report.warnings.isEmpty()) {
-                Chat.send(context, Chat.info("Warnings: " + Math.min(report.warnings.size(), 5) + " shown in mods/VoidVault/reports."));
+                Chat.send(context, Chat.info(context, "messages.import.warnings", Math.min(report.warnings.size(), 5)));
             }
         }
     }

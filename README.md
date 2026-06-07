@@ -25,12 +25,6 @@ Participe do melhor servidor de RPG do Brasil! Clique na imagem abaixo e entre n
 - Support both small servers and larger servers with permission-based slot tiers.
 - Keep the codebase approachable for contributors.
 
-## Current version
-
-```txt
-0.1.0
-```
-
 ## Current features
 
 - `/vv` and `/voidvault` command roots.

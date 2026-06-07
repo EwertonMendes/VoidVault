@@ -1,7 +1,7 @@
 {
   "Group": "tblack.voidvault",
   "Name": "VoidVault",
-  "Version": "0.1.0",
+  "Version": "0.1.1",
   "Description": "A cross-dimensional personal vault with SQLite storage, configurable slot tiers and an EnderChest migration tool.",
   "ServerVersion": "*",
   "Authors": [

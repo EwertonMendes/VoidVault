@@ -1,0 +1,45 @@
+items.VoidVault.name=Сховище Порожнечі
+items.VoidVault.description=Міжвимірне сховище, яке зберігає ваші скарби доступними звідусіль.
+
+voidvault.commands.root.description=Відкрити ваше Сховище Порожнечі або керувати плагіном
+voidvault.commands.help.description=Показує команди VoidVault
+voidvault.commands.reload.description=Перезавантажує конфігурацію VoidVault
+voidvault.commands.overflow.description=Перевіряє приховані перенесені слоти
+voidvault.commands.open.description=Відкриває Сховище Порожнечі іншого гравця
+voidvault.commands.import.description=Імпортує старі дані сховищ
+voidvault.commands.import.enderchest.description=Імпортує дані з kvothe EnderChest
+voidvault.arguments.player.description=Ім'я гравця або UUID
+
+voidvault.messages.player_entity_not_found=Не вдалося визначити сутність вашого гравця.
+voidvault.messages.no_permission.use=У вас немає дозволу використовувати VoidVault.
+voidvault.messages.no_permission.reload=У вас немає дозволу перезавантажувати VoidVault.
+voidvault.messages.no_permission.inspect=У вас немає дозволу переглядати Сховища Порожнечі інших гравців.
+voidvault.messages.no_permission.import=У вас немає дозволу імпортувати старі дані EnderChest.
+voidvault.messages.open_failed.self=Не вдалося відкрити ваше Сховище Порожнечі.
+voidvault.messages.open_failed.other=Не вдалося відкрити Сховище Порожнечі цільового гравця.
+voidvault.messages.players_only=Цю команду можуть використовувати лише гравці.
+voidvault.messages.player_not_found=Гравця не знайдено. Використайте ім'я онлайн-гравця або UUID.
+voidvault.messages.reload.success=Конфігурацію VoidVault перезавантажено.
+voidvault.messages.overflow.none=У вас немає прихованих overflow-предметів.
+voidvault.messages.overflow.has_items=У вас є {0} слотів предметів понад поточний видимий ліміт. Вони з'являться, коли ви розблокуєте більше слотів.
+voidvault.messages.overflow.failed=Не вдалося перевірити overflow.
+voidvault.messages.open.success_other=Сховище Порожнечі гравця {0} відкрито.
+
+voidvault.messages.help.title=Команди VoidVault
+voidvault.messages.help.open_alias_vv=/vv - Відкрити ваше сховище
+voidvault.messages.help.open_alias_voidvault=/voidvault - Відкрити ваше сховище
+voidvault.messages.help.overflow=/voidvault overflow - Перевірити приховані перенесені слоти
+voidvault.messages.help.open_other=/voidvault open <гравець|uuid> - Перегляд адміністратором
+voidvault.messages.help.reload=/voidvault reload - Перезавантажити конфігурацію
+voidvault.messages.help.import_enderchest=/voidvault import enderchest - Імпортувати старі дані EnderChest
+
+voidvault.messages.import.preview_title=Попередній перегляд імпорту VoidVault
+voidvault.messages.import.complete_title=Імпорт VoidVault завершено
+voidvault.messages.import.players_found=Гравців знайдено: {0}
+voidvault.messages.import.players_imported=Гравців імпортовано: {0}
+voidvault.messages.import.players_skipped=Гравців пропущено: {0}
+voidvault.messages.import.players_with_items=Гравців з предметами: {0}
+voidvault.messages.import.stored_item_slots=Збережених слотів предметів: {0}
+voidvault.messages.import.overflow_players=Гравців зі слотами overflow: {0}
+voidvault.messages.import.invalid_rows_items=Недійсні рядки/предмети: {0}/{1}
+voidvault.messages.import.warnings=Попередження: {0} показано в mods/VoidVault/reports.

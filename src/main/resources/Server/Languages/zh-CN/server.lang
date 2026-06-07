@@ -1,0 +1,45 @@
+items.VoidVault.name=虚空宝库
+items.VoidVault.description=一个跨维度宝库，让你的宝物可以从任何地方取用。
+
+voidvault.commands.root.description=打开你的虚空宝库或管理插件
+voidvault.commands.help.description=显示 VoidVault 命令
+voidvault.commands.reload.description=重新加载 VoidVault 配置
+voidvault.commands.overflow.description=检查隐藏的迁移槽位
+voidvault.commands.open.description=打开另一名玩家的虚空宝库
+voidvault.commands.import.description=导入旧版宝库数据
+voidvault.commands.import.enderchest.description=从 kvothe EnderChest 导入数据
+voidvault.arguments.player.description=玩家名称或 UUID
+
+voidvault.messages.player_entity_not_found=无法识别你的玩家实体。
+voidvault.messages.no_permission.use=你没有权限使用 VoidVault。
+voidvault.messages.no_permission.reload=你没有权限重新加载 VoidVault。
+voidvault.messages.no_permission.inspect=你没有权限查看其他玩家的虚空宝库。
+voidvault.messages.no_permission.import=你没有权限导入旧版 EnderChest 数据。
+voidvault.messages.open_failed.self=无法打开你的虚空宝库。
+voidvault.messages.open_failed.other=无法打开目标玩家的虚空宝库。
+voidvault.messages.players_only=此命令只能由玩家使用。
+voidvault.messages.player_not_found=未找到玩家。请使用在线玩家名称或 UUID。
+voidvault.messages.reload.success=VoidVault 配置已重新加载。
+voidvault.messages.overflow.none=你没有隐藏的溢出物品。
+voidvault.messages.overflow.has_items=你有 {0} 个物品槽位存储在当前可见槽位限制之外。解锁更多槽位后，它们会显示出来。
+voidvault.messages.overflow.failed=检查溢出槽位失败。
+voidvault.messages.open.success_other=已打开 {0} 的虚空宝库。
+
+voidvault.messages.help.title=VoidVault 命令
+voidvault.messages.help.open_alias_vv=/vv - 打开你的宝库
+voidvault.messages.help.open_alias_voidvault=/voidvault - 打开你的宝库
+voidvault.messages.help.overflow=/voidvault overflow - 检查隐藏的迁移槽位
+voidvault.messages.help.open_other=/voidvault open <player|uuid> - 管理员查看
+voidvault.messages.help.reload=/voidvault reload - 重新加载配置
+voidvault.messages.help.import_enderchest=/voidvault import enderchest - 导入旧版 EnderChest 数据
+
+voidvault.messages.import.preview_title=VoidVault 导入预览
+voidvault.messages.import.complete_title=VoidVault 导入完成
+voidvault.messages.import.players_found=找到玩家数：{0}
+voidvault.messages.import.players_imported=已导入玩家数：{0}
+voidvault.messages.import.players_skipped=已跳过玩家数：{0}
+voidvault.messages.import.players_with_items=拥有物品的玩家数：{0}
+voidvault.messages.import.stored_item_slots=已存储物品槽位数：{0}
+voidvault.messages.import.overflow_players=拥有溢出槽位的玩家数：{0}
+voidvault.messages.import.invalid_rows_items=无效行/物品：{0}/{1}
+voidvault.messages.import.warnings=警告：{0} 条已显示在 mods/VoidVault/reports 中。

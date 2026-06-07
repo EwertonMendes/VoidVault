@@ -1,0 +1,45 @@
+items.VoidVault.name=Хранилище Бездны
+items.VoidVault.description=Межпространственное хранилище, которое хранит ваши сокровища и делает их доступными откуда угодно.
+
+voidvault.commands.root.description=Открыть ваше Хранилище Бездны или управлять плагином
+voidvault.commands.help.description=Показывает команды VoidVault
+voidvault.commands.reload.description=Перезагружает конфигурацию VoidVault
+voidvault.commands.overflow.description=Проверяет скрытые перенесённые слоты
+voidvault.commands.open.description=Открывает Хранилище Бездны другого игрока
+voidvault.commands.import.description=Импортирует старые данные хранилищ
+voidvault.commands.import.enderchest.description=Импортирует данные из kvothe EnderChest
+voidvault.arguments.player.description=Имя игрока или UUID
+
+voidvault.messages.player_entity_not_found=Не удалось определить сущность вашего игрока.
+voidvault.messages.no_permission.use=У вас нет разрешения использовать VoidVault.
+voidvault.messages.no_permission.reload=У вас нет разрешения перезагружать VoidVault.
+voidvault.messages.no_permission.inspect=У вас нет разрешения просматривать Хранилища Бездны других игроков.
+voidvault.messages.no_permission.import=У вас нет разрешения импортировать старые данные EnderChest.
+voidvault.messages.open_failed.self=Не удалось открыть ваше Хранилище Бездны.
+voidvault.messages.open_failed.other=Не удалось открыть Хранилище Бездны выбранного игрока.
+voidvault.messages.players_only=Эту команду могут использовать только игроки.
+voidvault.messages.player_not_found=Игрок не найден. Используйте имя игрока онлайн или UUID.
+voidvault.messages.reload.success=Конфигурация VoidVault перезагружена.
+voidvault.messages.overflow.none=У вас нет скрытых overflow-предметов.
+voidvault.messages.overflow.has_items=У вас есть {0} слотов предметов сверх текущего видимого лимита. Они появятся, когда вы разблокируете больше слотов.
+voidvault.messages.overflow.failed=Не удалось проверить overflow.
+voidvault.messages.open.success_other=Хранилище Бездны игрока {0} открыто.
+
+voidvault.messages.help.title=Команды VoidVault
+voidvault.messages.help.open_alias_vv=/vv - Открыть ваше хранилище
+voidvault.messages.help.open_alias_voidvault=/voidvault - Открыть ваше хранилище
+voidvault.messages.help.overflow=/voidvault overflow - Проверить скрытые перенесённые слоты
+voidvault.messages.help.open_other=/voidvault open <игрок|uuid> - Просмотр администратором
+voidvault.messages.help.reload=/voidvault reload - Перезагрузить конфигурацию
+voidvault.messages.help.import_enderchest=/voidvault import enderchest - Импортировать старые данные EnderChest
+
+voidvault.messages.import.preview_title=Предпросмотр импорта VoidVault
+voidvault.messages.import.complete_title=Импорт VoidVault завершён
+voidvault.messages.import.players_found=Игроков найдено: {0}
+voidvault.messages.import.players_imported=Игроков импортировано: {0}
+voidvault.messages.import.players_skipped=Игроков пропущено: {0}
+voidvault.messages.import.players_with_items=Игроков с предметами: {0}
+voidvault.messages.import.stored_item_slots=Сохранённых слотов предметов: {0}
+voidvault.messages.import.overflow_players=Игроков со слотами overflow: {0}
+voidvault.messages.import.invalid_rows_items=Недопустимые строки/предметы: {0}/{1}
+voidvault.messages.import.warnings=Предупреждения: {0} показано в mods/VoidVault/reports.

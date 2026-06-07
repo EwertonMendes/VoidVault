@@ -1,2 +1,45 @@
 items.VoidVault.name=Cofre do Vazio
 items.VoidVault.description=Um cofre dimensional que mantém seus tesouros acessíveis de qualquer lugar.
+
+voidvault.commands.root.description=Abra seu Cofre do Vazio ou gerencie o plugin
+voidvault.commands.help.description=Mostra os comandos do VoidVault
+voidvault.commands.reload.description=Recarrega a configuração do VoidVault
+voidvault.commands.overflow.description=Verifica espaços migrados ocultos
+voidvault.commands.open.description=Abre o Cofre do Vazio de outro jogador
+voidvault.commands.import.description=Importa dados de cofres antigos
+voidvault.commands.import.enderchest.description=Importa dados do EnderChest do kvothe
+voidvault.arguments.player.description=Nome do jogador ou UUID
+
+voidvault.messages.player_entity_not_found=Não foi possível identificar a entidade do seu jogador.
+voidvault.messages.no_permission.use=Você não tem permissão para usar o VoidVault.
+voidvault.messages.no_permission.reload=Você não tem permissão para recarregar o VoidVault.
+voidvault.messages.no_permission.inspect=Você não tem permissão para inspecionar Cofres do Vazio de outros jogadores.
+voidvault.messages.no_permission.import=Você não tem permissão para importar dados antigos do EnderChest.
+voidvault.messages.open_failed.self=Falha ao abrir seu Cofre do Vazio.
+voidvault.messages.open_failed.other=Falha ao abrir o Cofre do Vazio do jogador alvo.
+voidvault.messages.players_only=Este comando só pode ser usado por jogadores.
+voidvault.messages.player_not_found=Jogador não encontrado. Use o nome de um jogador online ou o UUID.
+voidvault.messages.reload.success=Configuração do VoidVault recarregada.
+voidvault.messages.overflow.none=Você não tem itens ocultos de overflow.
+voidvault.messages.overflow.has_items=Você tem {0} espaços de itens armazenados acima do limite visível atual. Eles aparecerão quando você desbloquear mais espaços.
+voidvault.messages.overflow.failed=Falha ao verificar overflow.
+voidvault.messages.open.success_other=Cofre do Vazio de {0} aberto.
+
+voidvault.messages.help.title=Comandos do VoidVault
+voidvault.messages.help.open_alias_vv=/vv - Abre seu cofre
+voidvault.messages.help.open_alias_voidvault=/voidvault - Abre seu cofre
+voidvault.messages.help.overflow=/voidvault overflow - Verifica espaços migrados ocultos
+voidvault.messages.help.open_other=/voidvault open <jogador|uuid> - Inspeção de administrador
+voidvault.messages.help.reload=/voidvault reload - Recarrega a configuração
+voidvault.messages.help.import_enderchest=/voidvault import enderchest - Importa dados antigos do EnderChest
+
+voidvault.messages.import.preview_title=Prévia da importação do VoidVault
+voidvault.messages.import.complete_title=Importação do VoidVault concluída
+voidvault.messages.import.players_found=Jogadores encontrados: {0}
+voidvault.messages.import.players_imported=Jogadores importados: {0}
+voidvault.messages.import.players_skipped=Jogadores ignorados: {0}
+voidvault.messages.import.players_with_items=Jogadores com itens: {0}
+voidvault.messages.import.stored_item_slots=Espaços de itens armazenados: {0}
+voidvault.messages.import.overflow_players=Jogadores com espaços de overflow: {0}
+voidvault.messages.import.invalid_rows_items=Linhas/itens inválidos: {0}/{1}
+voidvault.messages.import.warnings=Avisos: {0} exibidos em mods/VoidVault/reports.

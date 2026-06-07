@@ -2,6 +2,7 @@ package tblack.voidvault.util;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
+import tblack.voidvault.i18n.I18n;
 
 public final class Chat {
     private Chat() {
@@ -29,5 +30,21 @@ public final class Chat {
 
     public static Message title(String message) {
         return Message.raw(message).color("#D48CFF");
+    }
+
+    public static Message ok(CommandContext context, String key, Object... args) {
+        return ok(I18n.translate(context, key, args));
+    }
+
+    public static Message error(CommandContext context, String key, Object... args) {
+        return error(I18n.translate(context, key, args));
+    }
+
+    public static Message info(CommandContext context, String key, Object... args) {
+        return info(I18n.translate(context, key, args));
+    }
+
+    public static Message title(CommandContext context, String key, Object... args) {
+        return title(I18n.translate(context, key, args));
     }
 }
