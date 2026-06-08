@@ -2,6 +2,8 @@
 
 > A source-available Hytale server mod that adds a cross-dimensional personal vault for each player.
 
+<img width="724" height="543" alt="VoidVault_logo" src="https://github.com/user-attachments/assets/afe8b5cd-84e7-422a-b86f-4af56ea9d453" />
+
 VoidVault is a source-available Hytale server mod that adds a cross-dimensional personal vault for each player.
 
 It provides a physical craftable vault block, optional permission-based multi-vaults, player-bound SQLite storage, configurable slot tiers, LuckPerms-compatible permission checks, and an in-game migration path from EnderChest mod.
