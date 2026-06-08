@@ -1,4 +1,6 @@
-# VoidVault
+# 🟣 VoidVault
+
+> A source-available Hytale server mod that adds a cross-dimensional personal vault for each player.
 
 VoidVault is a source-available Hytale server mod that adds a cross-dimensional personal vault for each player.
 
@@ -6,99 +8,113 @@ It provides a physical craftable vault block, optional permission-based multi-va
 
 The project is designed to be easy to maintain, fork, and contribute to, while keeping the data migration logic safe enough for real servers.
 
-## VoidVault is sponsored by HyBrasa / VoidVault é patrocinado por HyBrasa🔥
+---
+
+## 🔥 VoidVault is sponsored by HyBrasa / VoidVault é patrocinado por HyBrasa
 
 Join the best Brazilian RPG server, click the image below and join our discord:
 Participe do melhor servidor de RPG do Brasil! Clique na imagem abaixo e entre no nosso Discord:
 
-**Server IP**: enx-cirion-69.enx.host:11276
+**Server IP**: `enx-cirion-69.enx.host:11276`
 
 <a href="https://discord.gg/cHEMmhXQ9K" target="_blank" rel="noopener noreferrer">
   <img width="468" height="60" alt="hybrasa_banner" src="https://github.com/user-attachments/assets/d78562ce-97a5-405d-a622-10ab4989345e" />
 </a>
 
-## Project goals
+---
 
-- Provide a reliable personal vault system for Hytale servers.
-- Offer a clean migration path from the legacy EnderChest mod.
-- Keep player data safe during imports, reloads, shutdowns, and slot-tier changes.
-- Support both small servers and larger servers with permission-based slot and vault tiers.
-- Keep the codebase approachable for contributors.
+## 🎯 Project goals
 
-## Current features
+* Provide a reliable personal vault system for Hytale servers.
+* Offer a clean migration path from the legacy EnderChest mod.
+* Keep player data safe during imports, reloads, shutdowns, and slot-tier changes.
+* Support both small servers and larger servers with permission-based slot and vault tiers.
+* Keep the codebase approachable for contributors.
 
-- `/vv` and `/voidvault` command roots.
-- Physical craftable `Void Vault` block.
-- Custom VoidVault opening sound.
-- SQLite storage by default.
-- Optional multi-vault support.
-- Configurable visible slot tiers.
-- LuckPerms-compatible permission and group checks.
-- Admin reload command.
-- Admin inspect command.
-- In-game EnderChest importer.
-- Overflow-safe migration for slots above a player's current visible limit.
-- Runtime config reload.
-- Configurable crafting enable/disable flag.
-- Build-ready Gradle project with ShadowJar.
-- Local `runServer` Gradle task for development servers.
+---
 
-## Command tree
+## ✨ Current features
 
-```txt
-/vv
-/voidvault
-/voidvault help
-/voidvault overflow
-/voidvault overflow <number|all>
-/voidvault list
-/vv <number>
-/vv ui
-/vv rename <number> <name|reset>
-/voidvault open <player|uuid>
-/voidvault open <player|uuid> <number>
-/voidvault reload
-/voidvault import enderchest
-```
+| Feature                                               | Description                                                  |
+| ----------------------------------------------------- | ------------------------------------------------------------ |
+| `/vv` and `/voidvault` command roots                  | Main player and admin command entry points.                  |
+| Physical craftable `Void Vault` block                 | Allows players to access their vault through a block.        |
+| Custom VoidVault opening sound                        | Plays when opening the physical vault block.                 |
+| SQLite storage by default                             | Stores vault data locally.                                   |
+| Optional multi-vault support                          | Allows multiple vaults per player when enabled.              |
+| Configurable visible slot tiers                       | Supports different vault sizes by permission or group.       |
+| LuckPerms-compatible permission and group checks      | Reads groups through reflection when LuckPerms is installed. |
+| Admin reload command                                  | Reloads runtime configuration.                               |
+| Admin inspect command                                 | Allows staff to inspect player vaults.                       |
+| In-game EnderChest importer                           | Imports data from the legacy EnderChest mod.                 |
+| Overflow-safe migration                               | Preserves slots above a player's current visible limit.      |
+| Runtime config reload                                 | Applies config changes without full server restart.          |
+| Configurable crafting enable/disable flag             | Allows server owners to disable crafting.                    |
+| Build-ready Gradle project with ShadowJar             | Ready for local builds and releases.                         |
+| Local `runServer` Gradle task for development servers | Starts a local Hytale test server.                           |
 
-## Permissions
+---
+
+## 🌳 Command tree
+
+| Command                                   | Description                                        |
+| ----------------------------------------- | -------------------------------------------------- |
+| `/vv`                                     | Opens the player's main vault.                     |
+| `/voidvault`                              | Opens the player's main vault.                     |
+| `/voidvault help`                         | Shows available VoidVault commands.                |
+| `/voidvault overflow`                     | Shows hidden overflow item slots.                  |
+| `/voidvault overflow <number\|all>`       | Shows overflow for a specific vault or all vaults. |
+| `/voidvault list`                         | Lists available vaults.                            |
+| `/vv <number>`                            | Opens a specific vault.                            |
+| `/vv ui`                                  | Opens the multi-vault selector page.               |
+| `/vv rename <number> <name\|reset>`       | Sets or resets a custom vault label.               |
+| `/voidvault open <player\|uuid>`          | Opens another player's main vault.                 |
+| `/voidvault open <player\|uuid> <number>` | Opens a specific vault from another player.        |
+| `/voidvault reload`                       | Reloads the VoidVault configuration.               |
+| `/voidvault import enderchest`            | Imports data from the legacy EnderChest mod.       |
+
+---
+
+## 🔐 Permissions
 
 Default command permissions are configured in `mods/VoidVault/config.json`:
 
-```txt
-voidvault.use
-voidvault.admin
-voidvault.admin.reload
-voidvault.admin.import
-```
+| Permission               | Purpose                                 |
+| ------------------------ | --------------------------------------- |
+| `voidvault.use`          | Allows players to use VoidVault.        |
+| `voidvault.admin`        | Allows admin-level VoidVault actions.   |
+| `voidvault.admin.reload` | Allows reloading the VoidVault config.  |
+| `voidvault.admin.import` | Allows running the EnderChest importer. |
 
 Default slot permissions:
 
-```txt
-voidvault.slots.vip1 -> 18 slots
-voidvault.slots.vip2 -> 27 slots
-voidvault.slots.vip3 -> 36 slots
-voidvault.slots.vip4 -> 54 slots
-voidvault.slots.vip5 -> 63 slots
-```
+| Permission             |    Slots |
+| ---------------------- | -------: |
+| `voidvault.slots.vip1` | 18 slots |
+| `voidvault.slots.vip2` | 27 slots |
+| `voidvault.slots.vip3` | 36 slots |
+| `voidvault.slots.vip4` | 54 slots |
+| `voidvault.slots.vip5` | 63 slots |
 
 Legacy EnderChest permissions are also supported by default to make migration easier:
 
-```txt
-enderchests.vip  -> 27 slots
-enderchests.vip+ -> 54 slots
-enderchests.vip5 -> 63 slots
-```
+| Permission         |    Slots |
+| ------------------ | -------: |
+| `enderchests.vip`  | 27 slots |
+| `enderchests.vip+` | 54 slots |
+| `enderchests.vip5` | 63 slots |
 
 Default multi-vault permissions when `multi-vaults.enabled` is set to `true`:
 
-```txt
-voidvault.vaults.vip1 -> 2 vaults
-voidvault.vaults.vip2 -> 3 vaults
-voidvault.vaults.vip5 -> 10 vaults
-```
+| Permission              |    Vaults |
+| ----------------------- | --------: |
+| `voidvault.vaults.vip1` |  2 vaults |
+| `voidvault.vaults.vip2` |  3 vaults |
+| `voidvault.vaults.vip5` | 10 vaults |
 
-## LuckPerms support
+---
+
+## 👑 LuckPerms support
 
 VoidVault can work without LuckPerms, but it can also read LuckPerms groups through reflection when LuckPerms is installed.
 
@@ -115,7 +131,9 @@ Slot tiers can be configured by permission node and/or LuckPerms group:
 
 The highest matching slot tier is used.
 
-## Configuration
+---
+
+## ⚙️ Configuration
 
 The default configuration is generated at:
 
@@ -131,17 +149,19 @@ config.example.json
 
 Main config sections:
 
-```txt
-database
-commands
-slots
-multi-vaults
-crafting
-importer
-safety
-```
+| Section        | Purpose                                      |
+| -------------- | -------------------------------------------- |
+| `database`     | Database type and file path.                 |
+| `commands`     | Command names, aliases and permissions.      |
+| `slots`        | Visible slot limits and slot tiers.          |
+| `multi-vaults` | Multi-vault access and vault tiers.          |
+| `crafting`     | Crafting enable/disable behavior.            |
+| `importer`     | Legacy EnderChest import paths and behavior. |
+| `safety`       | Save and safety behavior.                    |
 
-## Multi-vault behavior
+---
+
+## 💜 Multi-vault behavior
 
 Multi-vaults are disabled by default. Existing servers keep the same `/vv` and block behavior until `multi-vaults.enabled` is set to `true`.
 
@@ -149,7 +169,9 @@ When enabled, `/vv` still opens Vault 1, `/vv <number>` opens a specific vault i
 
 Vault count is controlled by `multi-vaults.defaultVaults`, `multi-vaults.maxVaults`, permission tiers and LuckPerms groups. The hard safety limit is 10000 vaults per player. Losing access to extra vaults never deletes data; locked vaults remain stored and become accessible again if the player regains permission.
 
-## Slot overflow behavior
+---
+
+## 🛡️ Slot overflow behavior
 
 VoidVault does not delete items when a player has fewer visible slots than the amount of data stored.
 
@@ -157,7 +179,9 @@ For example, if a player has items in slots `0` through `62`, but their current 
 
 This is especially important during EnderChest migrations.
 
-## Crafting configuration
+---
+
+## 🔨 Crafting configuration
 
 VoidVault has a craftable block item.
 
@@ -175,7 +199,9 @@ When `crafting.enabled` is set to `false`, VoidVault attempts to disable the rec
 
 Hytale loads the actual recipe ingredients from the item asset JSON, so ingredient changes should be synced before building the jar:
 
-## Migration from EnderChest
+---
+
+## 🔁 Migration from EnderChest
 
 VoidVault can import data from EnderChest mod.
 
@@ -199,16 +225,18 @@ Run the import in-game:
 
 VoidVault will:
 
-- Read legacy EnderChest player vaults.
-- Import valid inventory data into `mods/VoidVault/voidvault.db`.
-- Preserve legacy slot indexes.
-- Keep overflow items stored safely.
-- Skip non-empty VoidVault records unless overwrite behavior is enabled.
-- Overwrite empty `{}` records created before migration.
-- Generate import reports under `mods/VoidVault/reports/`.
-- Create a backup before confirmed imports when `createBackupBeforeConfirm` is enabled.
+* Read legacy EnderChest player vaults.
+* Import valid inventory data into `mods/VoidVault/voidvault.db`.
+* Preserve legacy slot indexes.
+* Keep overflow items stored safely.
+* Skip non-empty VoidVault records unless overwrite behavior is enabled.
+* Overwrite empty `{}` records created before migration.
+* Generate import reports under `mods/VoidVault/reports/`.
+* Create a backup before confirmed imports when `createBackupBeforeConfirm` is enabled.
 
-## Legacy EnderChest database format
+---
+
+## 🗃️ Legacy EnderChest database format
 
 The expected legacy table is:
 
@@ -233,7 +261,9 @@ The expected inventory JSON format is:
 }
 ```
 
-## VoidVault database format
+---
+
+## 🗄️ VoidVault database format
 
 VoidVault stores data in SQLite by default:
 
@@ -265,21 +295,27 @@ last_updated
 
 Vault 1 is mirrored to the legacy table for safer rollback. The `inventory_data` format is intentionally close to the legacy EnderChest format so migrations remain simple and auditable.
 
-## Development requirements
+---
 
-- JDK 25
-- Gradle Wrapper script included in the project
-- A local Hytale server/modding environment
-- Optional: LuckPerms installed on the test server
+## 🧰 Development requirements
+
+* JDK 25
+* Gradle Wrapper script included in the project
+* A local Hytale server/modding environment
+* Optional: LuckPerms installed on the test server
 
 The project uses:
 
-- Hytale server API as `compileOnly`
-- SQLite JDBC bundled through ShadowJar
-- Gson bundled through ShadowJar
-- BSON bundled through ShadowJar
+| Dependency        | Usage                     |
+| ----------------- | ------------------------- |
+| Hytale server API | `compileOnly`             |
+| SQLite JDBC       | Bundled through ShadowJar |
+| Gson              | Bundled through ShadowJar |
+| BSON              | Bundled through ShadowJar |
 
-## Build
+---
+
+## 🏗️ Build
 
 On Windows PowerShell:
 
@@ -300,7 +336,9 @@ The generated mod jar is:
 build/libs/VoidVault-x.x.x.jar
 ```
 
-## Local runServer task
+---
+
+## 🚀 Local runServer task
 
 The project includes a `runServer` Gradle task based on the standard Hytale install layout.
 
@@ -327,43 +365,47 @@ server_jar=C:/Path/To/HytaleServer.jar
 
 The task builds the shaded jar, copies it to `run/run_mods`, and starts the server with `--allow-op`, `--disable-sentry`, `--assets`, and `--mods`.
 
-## Local testing checklist
+---
+
+## ✅ Local testing checklist
 
 After building and copying the jar to your test server:
 
-```txt
-/voidvault help
-/vv
-/voidvault reload
-/voidvault overflow
-/voidvault overflow all
-/voidvault list
-/vv 2
-/vv ui
-/vv rename 2 Ores
-/vv rename 2 reset
-/voidvault import enderchest
-/voidvault open <player|uuid>
-/voidvault open <player|uuid> 2
-```
+| Command                            | Purpose                           |
+| ---------------------------------- | --------------------------------- |
+| `/voidvault help`                  | Check the help command.           |
+| `/vv`                              | Open the main vault.              |
+| `/voidvault reload`                | Reload the configuration.         |
+| `/voidvault overflow`              | Check main vault overflow.        |
+| `/voidvault overflow all`          | Check overflow across all vaults. |
+| `/voidvault list`                  | List available vaults.            |
+| `/vv 2`                            | Open Vault 2.                     |
+| `/vv ui`                           | Open the selector UI.             |
+| `/vv rename 2 Ores`                | Set a custom vault name.          |
+| `/vv rename 2 reset`               | Reset a custom vault name.        |
+| `/voidvault import enderchest`     | Test EnderChest import.           |
+| `/voidvault open <player\|uuid>`   | Open another player's main vault. |
+| `/voidvault open <player\|uuid> 2` | Open another player's Vault 2.    |
 
 Recommended manual tests:
 
-- Open your own vault with `/vv`.
-- Place and use the physical Void Vault block.
-- Confirm the custom open sound plays when opening the physical block.
-- Add items, close the vault, restart the server, and confirm items persist.
-- Test different slot tiers.
-- Test LuckPerms group-based slot tiers.
-- Import a copy of an EnderChest database.
-- Confirm overflow items are preserved.
-- Confirm admin inspect works.
-- Enable multi-vaults in a copy of the config and test `/vv 2`.
-- Confirm the physical block opens the selector for players with multiple vaults.
-- Confirm locked extra vaults remain stored after permission changes.
-- Confirm `reload` applies config changes.
+* Open your own vault with `/vv`.
+* Place and use the physical Void Vault block.
+* Confirm the custom open sound plays when opening the physical block.
+* Add items, close the vault, restart the server, and confirm items persist.
+* Test different slot tiers.
+* Test LuckPerms group-based slot tiers.
+* Import a copy of an EnderChest database.
+* Confirm overflow items are preserved.
+* Confirm admin inspect works.
+* Enable multi-vaults in a copy of the config and test `/vv 2`.
+* Confirm the physical block opens the selector for players with multiple vaults.
+* Confirm locked extra vaults remain stored after permission changes.
+* Confirm `reload` applies config changes.
 
-## Project structure
+---
+
+## 📁 Project structure
 
 ```txt
 src/main/java/tblack/voidvault/
@@ -383,7 +425,9 @@ src/main/resources/
   Server/
 ```
 
-## Contributing
+---
+
+## 🤝 Contributing
 
 Contributions are welcome.
 
@@ -396,20 +440,24 @@ Before opening a pull request:
 5. Prefer clear logs and reports over silent failure.
 6. Keep code readable and easy to audit.
 
-## Development principles
+---
+
+## 🧭 Development principles
 
 VoidVault should be conservative with player data.
 
 When in doubt:
 
-- Preserve data instead of deleting it.
-- Log migration problems.
-- Skip unsafe writes.
-- Keep backups before destructive operations.
-- Keep old slot indexes intact.
-- Avoid hard dependencies on optional plugins.
+* Preserve data instead of deleting it.
+* Log migration problems.
+* Skip unsafe writes.
+* Keep backups before destructive operations.
+* Keep old slot indexes intact.
+* Avoid hard dependencies on optional plugins.
 
-## License
+---
+
+## 📜 License
 
 VoidVault is licensed under the PolyForm Noncommercial License 1.0.0.
 
@@ -418,3 +466,5 @@ VoidVault is source-available for non-commercial use. You may read, use, copy, m
 You may not sell copies of this project, sell modified versions of this project, or use this project as the basis of a commercial product or paid service without explicit written permission from the project maintainers.
 
 Commercial licensing exceptions may be granted by the maintainers on request.
+
+Required Notice: Copyright (c) 2026 Tblack
