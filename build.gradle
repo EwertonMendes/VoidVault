@@ -132,6 +132,7 @@ tasks.register('runServer', JavaExec) {
     jvmArgs = [
         '--enable-preview',
         '--enable-native-access=ALL-UNNAMED',
+        '--sun-misc-unsafe-memory-access=allow',
         '-Xmx2G',
         '-Dfile.encoding=UTF-8'
     ]

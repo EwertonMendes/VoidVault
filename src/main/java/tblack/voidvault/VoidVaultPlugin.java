@@ -36,13 +36,7 @@ public class VoidVaultPlugin extends JavaPlugin {
 
         currentConfig = configManager.load();
         permissionService = new PermissionService(currentConfig);
-
-        try {
-            databaseService.connect(currentConfig);
-        } catch (Exception exception) {
-            System.err.println("[VoidVault] Failed to connect database: " + exception.getMessage());
-            exception.printStackTrace();
-        }
+        connectDatabase(currentConfig);
 
         vaultManager = new VaultManager(databaseService, permissionService, currentConfig);
         enderChestImporter = new EnderChestImporter(databaseService, currentConfig);
@@ -67,7 +61,13 @@ public class VoidVaultPlugin extends JavaPlugin {
     }
 
     public void reloadVoidVault() {
+        if (vaultManager != null) {
+            vaultManager.saveLoaded();
+            vaultManager.discardLoaded();
+        }
+
         currentConfig = configManager.reload();
+        connectDatabase(currentConfig);
         permissionService.reload(currentConfig);
         enderChestImporter.reload(currentConfig);
         vaultManager.reload(permissionService, currentConfig);
@@ -92,5 +92,14 @@ public class VoidVaultPlugin extends JavaPlugin {
 
     public EnderChestImporter getEnderChestImporter() {
         return enderChestImporter;
+    }
+
+    private void connectDatabase(VoidVaultConfig config) {
+        try {
+            databaseService.connect(config);
+        } catch (Exception exception) {
+            System.err.println("[VoidVault] Failed to connect database: " + exception.getMessage());
+            exception.printStackTrace();
+        }
     }
 }

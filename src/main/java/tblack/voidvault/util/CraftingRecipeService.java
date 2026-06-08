@@ -6,11 +6,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-/**
- * The recipe is declared in the item asset JSON. If an admin disables crafting,
- * this runtime hook removes the loaded recipe from the Workbench registry.
- * Reflection is used because the crafting registry API is still moving between Hytale builds.
- */
 public final class CraftingRecipeService {
     private CraftingRecipeService() {
     }

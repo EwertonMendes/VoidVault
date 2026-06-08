@@ -1,5 +1,5 @@
 {
-  "configVersion": "1",
+  "configVersion": "2",
   "database": {
     "type": "sqlite",
     "file": "mods/VoidVault/voidvault.db"
@@ -76,6 +76,37 @@
         "slots": 63,
         "permission": "enderchests.vip5",
         "luckPermsGroups": []
+      }
+    ]
+  },
+  "multi-vaults": {
+    "enabled": false,
+    "defaultVaults": 1,
+    "maxVaults": 10,
+    "tiers": [
+      {
+        "id": "vip1",
+        "vaults": 2,
+        "permission": "voidvault.vaults.vip1",
+        "luckPermsGroups": [
+          "vip1"
+        ]
+      },
+      {
+        "id": "vip2",
+        "vaults": 3,
+        "permission": "voidvault.vaults.vip2",
+        "luckPermsGroups": [
+          "vip2"
+        ]
+      },
+      {
+        "id": "vip5",
+        "vaults": 10,
+        "permission": "voidvault.vaults.vip5",
+        "luckPermsGroups": [
+          "vip5"
+        ]
       }
     ]
   },

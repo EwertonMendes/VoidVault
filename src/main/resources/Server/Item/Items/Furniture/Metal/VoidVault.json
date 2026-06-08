@@ -60,8 +60,6 @@
     "Opacity": "Transparent",
     "ParticleColor": "#8A2BE2",
     "State": {
-      "Id": "container",
-      "Capacity": 63,
       "Definitions": {
         "CloseWindow": {
           "InteractionSoundEventId": "SFX_Chest_Wooden_Close",

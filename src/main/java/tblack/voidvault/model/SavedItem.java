@@ -1,10 +1,5 @@
 package tblack.voidvault.model;
 
-/**
- * JSON-compatible item snapshot stored by VoidVault.
- * This intentionally matches the legacy EnderChest format:
- * {"0":{"id":"ItemId","amount":1,"metadata":"{...}","durability":100.0}}
- */
 public class SavedItem {
     public String id;
     public int amount;

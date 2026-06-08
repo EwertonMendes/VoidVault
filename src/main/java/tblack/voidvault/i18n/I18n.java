@@ -1,6 +1,8 @@
 package tblack.voidvault.i18n;
 
 import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,10 +27,10 @@ public final class I18n {
     private static final Map<String, Properties> CACHE = new ConcurrentHashMap<>();
 
     private static final String[] LOCALE_METHODS = {
-            "getLocale",
-            "locale",
             "getLanguage",
             "language",
+            "getLocale",
+            "locale",
             "getLanguageCode",
             "getLanguageTag",
             "getClientLocale",
@@ -49,16 +51,42 @@ public final class I18n {
     private I18n() {
     }
 
-    /**
-     * Returns a Hytale server translation key that can be used in asset/command definitions.
-     * The language files keep the key without the leading "server." namespace.
-     */
     public static String commandKey(String relativeKey) {
         return SERVER_TRANSLATION_PREFIX + stripKnownPrefix(relativeKey);
     }
 
     public static String translate(CommandContext context, String relativeKey, Object... args) {
         return translate(localeFromContext(context), relativeKey, args);
+    }
+
+
+    public static String localeFromPlayer(Player player) {
+        if (player == null) return DEFAULT_LOCALE;
+
+        try {
+            PlayerRef playerRef = player.getPlayerRef();
+            String locale = localeFromPlayerRef(playerRef);
+            if (locale != null && !locale.isBlank()) return locale;
+        } catch (Throwable ignored) {
+        }
+
+        String locale = findLocale(player, 0, new HashSet<>());
+        return locale == null ? DEFAULT_LOCALE : normalizeLocale(locale);
+    }
+
+    public static String localeFromPlayerRef(PlayerRef playerRef) {
+        if (playerRef == null) return DEFAULT_LOCALE;
+
+        try {
+            String language = playerRef.getLanguage();
+            if (language != null && !language.isBlank()) {
+                return normalizeLocale(language);
+            }
+        } catch (Throwable ignored) {
+        }
+
+        String locale = findLocale(playerRef, 0, new HashSet<>());
+        return locale == null ? DEFAULT_LOCALE : normalizeLocale(locale);
     }
 
     public static String translate(String locale, String relativeKey, Object... args) {
@@ -86,10 +114,13 @@ public final class I18n {
 
     private static Properties loadProperties(String locale) {
         Properties properties = new Properties();
-        String path = LANGUAGE_PATH_PREFIX + locale + "/server.lang";
+        loadPropertiesFile(properties, LANGUAGE_PATH_PREFIX + locale + "/server.lang");
+        return properties;
+    }
 
+    private static void loadPropertiesFile(Properties properties, String path) {
         try (InputStream input = openResource(path)) {
-            if (input == null) return properties;
+            if (input == null) return;
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, java.nio.charset.StandardCharsets.UTF_8))) {
                 properties.load(reader);
@@ -97,8 +128,6 @@ public final class I18n {
         } catch (IOException exception) {
             System.err.println("[VoidVault] Failed to load language file " + path + ": " + exception.getMessage());
         }
-
-        return properties;
     }
 
     private static InputStream openResource(String path) {
@@ -160,7 +189,7 @@ public final class I18n {
     }
 
     private static String findLocale(Object target, int depth, Set<Object> visited) {
-        if (target == null || depth > 2 || visited.contains(target)) return null;
+        if (target == null || depth > 4 || visited.contains(target)) return null;
         visited.add(target);
 
         for (String methodName : LOCALE_METHODS) {
@@ -188,8 +217,21 @@ public final class I18n {
             if (method.getParameterCount() != 0) return null;
             return method.invoke(target);
         } catch (Throwable ignored) {
-            return null;
         }
+
+        Class<?> type = target.getClass();
+        while (type != null && type != Object.class) {
+            try {
+                Method method = type.getDeclaredMethod(methodName);
+                if (method.getParameterCount() != 0) return null;
+                method.setAccessible(true);
+                return method.invoke(target);
+            } catch (Throwable ignored) {
+                type = type.getSuperclass();
+            }
+        }
+
+        return null;
     }
 
     private static String localeValue(Object value) {

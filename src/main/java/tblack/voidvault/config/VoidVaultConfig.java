@@ -1,13 +1,19 @@
 package tblack.voidvault.config;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class VoidVaultConfig {
-    public String configVersion = "1";
+    public static final int MAX_VAULTS_LIMIT = 10_000;
+
+    public String configVersion = "2";
     public Database database = new Database();
     public Commands commands = new Commands();
     public Slots slots = new Slots();
+    @SerializedName("multi-vaults")
+    public MultiVaults multiVaults = new MultiVaults();
     public Crafting crafting = new Crafting();
     public Importer importer = new Importer();
     public Safety safety = new Safety();
@@ -54,6 +60,34 @@ public class VoidVaultConfig {
         public Tier(String id, int slots, String permission, List<String> luckPermsGroups) {
             this.id = id;
             this.slots = slots;
+            this.permission = permission;
+            this.luckPermsGroups = new ArrayList<>(luckPermsGroups);
+        }
+    }
+
+    public static class MultiVaults {
+        public boolean enabled = false;
+        public int defaultVaults = 1;
+        public int maxVaults = 10;
+        public List<MultiVaultTier> tiers = new ArrayList<>(List.of(
+                new MultiVaultTier("vip1", 2, "voidvault.vaults.vip1", List.of("vip1")),
+                new MultiVaultTier("vip2", 3, "voidvault.vaults.vip2", List.of("vip2")),
+                new MultiVaultTier("vip5", 10, "voidvault.vaults.vip5", List.of("vip5"))
+        ));
+    }
+
+    public static class MultiVaultTier {
+        public String id;
+        public int vaults;
+        public String permission;
+        public List<String> luckPermsGroups = new ArrayList<>();
+
+        public MultiVaultTier() {
+        }
+
+        public MultiVaultTier(String id, int vaults, String permission, List<String> luckPermsGroups) {
+            this.id = id;
+            this.vaults = vaults;
             this.permission = permission;
             this.luckPermsGroups = new ArrayList<>(luckPermsGroups);
         }
@@ -109,5 +143,15 @@ public class VoidVaultConfig {
         int min = Math.max(1, slots.defaultSlots);
         int max = Math.max(min, slots.maxSlots);
         return Math.max(min, Math.min(max, value));
+    }
+
+    public int clampVaults(int value) {
+        int min = Math.max(1, multiVaults.defaultVaults);
+        int max = Math.max(min, Math.min(MAX_VAULTS_LIMIT, multiVaults.maxVaults));
+        return Math.max(min, Math.min(max, value));
+    }
+
+    public boolean isMultiVaultEnabled() {
+        return multiVaults != null && multiVaults.enabled;
     }
 }

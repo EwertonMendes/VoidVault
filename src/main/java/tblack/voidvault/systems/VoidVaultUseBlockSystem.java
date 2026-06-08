@@ -56,7 +56,7 @@ public class VoidVaultUseBlockSystem extends EntityEventSystem<EntityStore, UseB
         if (target == null) return;
 
         int rotationIndex = 0;
-        manager.openVault(player, target.x, target.y, target.z, rotationIndex, blockType);
+        manager.openVaultFromBlock(player, target.x, target.y, target.z, rotationIndex, blockType);
         playOpenSound(player, blockType, target, commandBuffer);
         event.setCancelled(true);
     }

@@ -1,0 +1,192 @@
+@VaultButtonStyle = (
+  Default: (
+    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFF4FF),
+    Background: #2A123F(0.96)
+  ),
+  Hovered: (
+    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
+    Background: #5E2B86(0.98)
+  ),
+  Pressed: (
+    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
+    Background: #7D40AD(0.98)
+  )
+);
+@SmallButtonStyle = (
+  Default: (
+    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #EEDCFF),
+    Background: #251036(0.96)
+  ),
+  Hovered: (
+    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
+    Background: #462066(0.98)
+  ),
+  Pressed: (
+    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
+    Background: #6E35A0(0.98)
+  )
+);
+@CancelButtonStyle = (
+  Default: (
+    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #F1E5FF),
+    Background: #2F1644(0.98)
+  ),
+  Hovered: (
+    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
+    Background: #572779(0.98)
+  ),
+  Pressed: (
+    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
+    Background: #7538A5(0.98)
+  )
+);
+
+Group {
+  LayoutMode: Center;
+  Background: #000000(0.42);
+
+  Group #Panel {
+    Background: #0B0612(0.97);
+    OutlineColor: #7A39B4(0.55);
+    OutlineSize: 1;
+    Anchor: (Width: 670, Height: 650);
+    Padding: (Top: 28, Bottom: 28, Left: 34, Right: 34);
+    LayoutMode: Top;
+
+    Group #HeaderGlow {
+      Anchor: (Height: 3, Bottom: 18);
+      Background: #A550E4(0.85);
+    }
+
+    Label #Title {
+      Style: (FontSize: 38, RenderBold: true, HorizontalAlignment: Center, TextColor: #E7B2FF);
+      Anchor: (Height: 48);
+      Text: "Void Vault";
+    }
+
+    Label #Subtitle {
+      Style: (FontSize: 17, HorizontalAlignment: Center, TextColor: #DCD1EA);
+      Anchor: (Height: 30, Top: 4);
+      Text: "Choose which vault you want to open";
+    }
+
+    Label #RenameHint {
+      Style: (FontSize: 13, HorizontalAlignment: Center, TextColor: #BCA5D7);
+      Anchor: (Height: 22, Top: 2);
+      Text: "Use /vv rename to label a vault";
+    }
+
+    Group #Divider {
+      Anchor: (Height: 2, Top: 14, Bottom: 18);
+      Background: #C073FF(0.45);
+    }
+
+    Group #VaultFrame {
+      Background: #170A24(0.9);
+      OutlineColor: #8C44CC(0.28);
+      OutlineSize: 1;
+      Anchor: (Height: 275);
+      Padding: (Top: 14, Bottom: 4, Left: 16, Right: 16);
+      LayoutMode: Top;
+
+      Group #VaultRow0 {
+        LayoutMode: Left;
+        Anchor: (Height: 116, Bottom: 14);
+
+        TextButton #VaultButton0 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 12);
+          Text: "Vault 1";
+        }
+
+        TextButton #VaultButton1 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 12);
+          Text: "Vault 2";
+        }
+
+        TextButton #VaultButton2 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 12);
+          Text: "Vault 3";
+        }
+
+        TextButton #VaultButton3 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 12);
+          Text: "Vault 4";
+        }
+
+        TextButton #VaultButton4 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 0);
+          Text: "Vault 5";
+        }
+      }
+
+      Group #VaultRow1 {
+        LayoutMode: Left;
+        Anchor: (Height: 116, Bottom: 14);
+
+        TextButton #VaultButton5 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 12);
+          Text: "Vault 6";
+        }
+
+        TextButton #VaultButton6 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 12);
+          Text: "Vault 7";
+        }
+
+        TextButton #VaultButton7 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 12);
+          Text: "Vault 8";
+        }
+
+        TextButton #VaultButton8 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 12);
+          Text: "Vault 9";
+        }
+
+        TextButton #VaultButton9 {
+          Style: @VaultButtonStyle;
+          Anchor: (Width: 104, Height: 105, Right: 0);
+          Text: "Vault 10";
+        }
+      }
+    }
+
+    Group #Footer {
+      LayoutMode: Left;
+      Anchor: (Top: 18, Height: 48);
+
+      TextButton #PreviousButton {
+        Style: @SmallButtonStyle;
+        Anchor: (Width: 130, Height: 44);
+        Text: "<";
+      }
+
+      Label #PageLabel {
+        Style: (FontSize: 16, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C9E7);
+        Anchor: (Width: 342, Height: 44);
+        Text: "Page 1 / 1";
+      }
+
+      TextButton #NextButton {
+        Style: @SmallButtonStyle;
+        Anchor: (Width: 130, Height: 44);
+        Text: ">";
+      }
+    }
+
+    TextButton #CloseButton {
+      Style: @CancelButtonStyle;
+      Anchor: (Top: 18, Height: 48);
+      Text: "Cancel";
+    }
+  }
+}

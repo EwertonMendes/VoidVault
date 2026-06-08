@@ -1,4 +1,6 @@
 .gradle/
+bin/
+*.zip
 build/
 out/
 *.iml
