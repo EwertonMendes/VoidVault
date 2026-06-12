@@ -12,7 +12,8 @@
     "usePermission": "voidvault.use",
     "adminPermission": "voidvault.admin",
     "reloadPermission": "voidvault.admin.reload",
-    "importPermission": "voidvault.admin.import"
+    "importPermission": "voidvault.admin.import",
+    "uiPermission": "voidvault.ui"
   },
   "slots": {
     "defaultSlots": 9,

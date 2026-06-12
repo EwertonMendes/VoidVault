@@ -31,6 +31,51 @@ public class PermissionService {
         this.slotCache.clear();
         this.vaultCountCache.clear();
         this.groupCache.clear();
+        registerPermissions();
+    }
+
+    public void registerPermissions() {
+        try {
+            com.hypixel.hytale.server.core.permissions.PermissionsModule module = PermissionsModule.get();
+            for (String permission : collectPermissions()) {
+                try {
+                    module.registerPermission(permission);
+                } catch (Throwable ignored) {
+                }
+            }
+        } catch (Throwable ignored) {
+        }
+    }
+
+    private java.util.Set<String> collectPermissions() {
+        java.util.Set<String> perms = new java.util.HashSet<>();
+        if (config == null || config.commands == null) return perms;
+
+        addIfNotBlank(perms, config.commands.usePermission);
+        addIfNotBlank(perms, config.commands.adminPermission);
+        addIfNotBlank(perms, config.commands.reloadPermission);
+        addIfNotBlank(perms, config.commands.importPermission);
+        addIfNotBlank(perms, config.commands.uiPermission);
+
+        if (config.slots != null && config.slots.tiers != null) {
+            for (VoidVaultConfig.Tier tier : config.slots.tiers) {
+                addIfNotBlank(perms, tier.permission);
+            }
+        }
+
+        if (config.multiVaults != null && config.multiVaults.tiers != null) {
+            for (VoidVaultConfig.MultiVaultTier tier : config.multiVaults.tiers) {
+                addIfNotBlank(perms, tier.permission);
+            }
+        }
+
+        return perms;
+    }
+
+    private static void addIfNotBlank(java.util.Set<String> set, String value) {
+        if (value != null && !value.isBlank()) {
+            set.add(value);
+        }
     }
 
     public boolean hasPermission(UUID uuid, String permission) {

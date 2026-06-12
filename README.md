@@ -86,6 +86,7 @@ Default command permissions are configured in `mods/VoidVault/config.json`:
 | `voidvault.use`          | Allows players to use VoidVault.        |
 | `voidvault.admin`        | Allows admin-level VoidVault actions.   |
 | `voidvault.admin.reload` | Allows reloading the VoidVault config.  |
+| `voidvault.ui`           | Allows opening the multi-vault selector UI. |
 | `voidvault.admin.import` | Allows running the EnderChest importer. |
 
 Default slot permissions:

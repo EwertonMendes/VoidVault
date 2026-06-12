@@ -66,17 +66,17 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
             return;
         }
 
-        if (!hasUsePermission(context)) {
-            Chat.send(context, Chat.error(context, "messages.no_permission.use"));
+        if (!hasUiPermission(context)) {
+            Chat.send(context, Chat.error(context, "messages.no_permission.ui"));
             return;
         }
 
         openSelfVault(context, player, playerRef.getUuid(), DatabaseService.PRIMARY_VAULT_ID);
     }
 
-    private boolean hasUsePermission(CommandContext context) {
+    private boolean hasUiPermission(CommandContext context) {
         VoidVaultConfig config = plugin.getCurrentConfig();
-        return hasCommandPermission(context, config.commands.usePermission);
+        return hasCommandPermission(context, config.commands.uiPermission);
     }
 
     private static boolean hasCommandPermission(VoidVaultPlugin plugin, CommandContext context, String permission) {
@@ -249,7 +249,16 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
 
             String value = vaultArg.get(context);
             if (value != null && value.equalsIgnoreCase("ui")) {
+                if (!hasCommandPermission(plugin, context, config.commands.uiPermission)) {
+                    Chat.send(context, Chat.error(context, "messages.no_permission.ui"));
+                    return;
+                }
                 openSelfVaultSelector(context, player, playerRef.getUuid());
+                return;
+            }
+
+            if (!hasCommandPermission(plugin, context, config.commands.uiPermission)) {
+                Chat.send(context, Chat.error(context, "messages.no_permission.ui"));
                 return;
             }
 
@@ -310,8 +319,8 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
                                @Nonnull PlayerRef playerRef,
                                @Nonnull World world) {
             VoidVaultConfig config = plugin.getCurrentConfig();
-            if (!hasCommandPermission(plugin, context, config.commands.usePermission)) {
-                Chat.send(context, Chat.error(context, "messages.no_permission.use"));
+            if (!hasCommandPermission(plugin, context, config.commands.uiPermission)) {
+                Chat.send(context, Chat.error(context, "messages.no_permission.ui"));
                 return;
             }
 

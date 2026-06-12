@@ -36,6 +36,7 @@ public class VoidVaultPlugin extends JavaPlugin {
 
         currentConfig = configManager.load();
         permissionService = new PermissionService(currentConfig);
+        permissionService.registerPermissions();
         connectDatabase(currentConfig);
 
         vaultManager = new VaultManager(databaseService, permissionService, currentConfig);

@@ -30,6 +30,7 @@ public class VoidVaultConfig {
         public String adminPermission = "voidvault.admin";
         public String reloadPermission = "voidvault.admin.reload";
         public String importPermission = "voidvault.admin.import";
+        public String uiPermission = "voidvault.ui";
     }
 
     public static class Slots {

@@ -21,6 +21,7 @@ voidvault.messages.no_permission.use=You don't have permission to use VoidVault.
 voidvault.messages.no_permission.reload=You don't have permission to reload VoidVault.
 voidvault.messages.no_permission.inspect=You don't have permission to inspect other VoidVaults.
 voidvault.messages.no_permission.import=You don't have permission to import legacy EnderChest data.
+voidvault.messages.no_permission.ui=You don't have permission to open the VoidVault UI.
 voidvault.messages.open_failed.self=Failed to open your VoidVault.
 voidvault.messages.open_failed.other=Failed to open target VoidVault.
 voidvault.messages.players_only=This command can only be used by players.
