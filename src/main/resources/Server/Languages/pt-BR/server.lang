@@ -21,6 +21,7 @@ voidvault.messages.no_permission.use=Você não tem permissão para usar o VoidV
 voidvault.messages.no_permission.reload=Você não tem permissão para recarregar o VoidVault.
 voidvault.messages.no_permission.inspect=Você não tem permissão para inspecionar Cofres do Vazio de outros jogadores.
 voidvault.messages.no_permission.import=Você não tem permissão para importar dados antigos do EnderChest.
+voidvault.messages.no_permission.ui=Você não tem permissão para abrir a interface do VoidVault.
 voidvault.messages.open_failed.self=Falha ao abrir seu Cofre do Vazio.
 voidvault.messages.open_failed.other=Falha ao abrir o Cofre do Vazio do jogador alvo.
 voidvault.messages.players_only=Este comando só pode ser usado por jogadores.

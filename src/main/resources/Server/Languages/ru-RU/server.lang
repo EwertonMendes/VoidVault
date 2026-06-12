@@ -21,6 +21,7 @@ voidvault.messages.no_permission.use=У вас нет разрешения на 
 voidvault.messages.no_permission.reload=У вас нет разрешения на перезагрузку Хранилища Бездны.
 voidvault.messages.no_permission.inspect=У вас нет разрешения на осмотр чужих хранилищ.
 voidvault.messages.no_permission.import=У вас нет разрешения на импорт данных EnderChest.
+voidvault.messages.no_permission.ui=У вас нет разрешения на открытие интерфейса VoidVault.
 voidvault.messages.open_failed.self=Не удалось открыть ваше Хранилище Бездны.
 voidvault.messages.open_failed.other=Не удалось открыть целевое Хранилище Бездны.
 voidvault.messages.players_only=Эту команду могут использовать только игроки.

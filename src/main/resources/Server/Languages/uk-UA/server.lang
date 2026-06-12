@@ -21,6 +21,7 @@ voidvault.messages.no_permission.use=У вас немає дозволу на в
 voidvault.messages.no_permission.reload=У вас немає дозволу на перезавантаження Сховища Безодні.
 voidvault.messages.no_permission.inspect=У вас немає дозволу на огляд інших сховищ.
 voidvault.messages.no_permission.import=У вас немає дозволу на імпорт даних EnderChest.
+voidvault.messages.no_permission.ui=У вас немає дозволу на відкриття інтерфейсу VoidVault.
 voidvault.messages.open_failed.self=Не вдалося відкрити ваше Сховище Безодні.
 voidvault.messages.open_failed.other=Не вдалося відкрити цільове Сховище Безодні.
 voidvault.messages.players_only=Цю команду можуть використовувати лише гравці.

@@ -21,6 +21,7 @@ voidvault.messages.no_permission.use=你没有权限使用虚空仓库。
 voidvault.messages.no_permission.reload=你没有权限重载虚空仓库。
 voidvault.messages.no_permission.inspect=你没有权限检查其他人的虚空仓库。
 voidvault.messages.no_permission.import=你没有权限导入旧版末影箱数据。
+voidvault.messages.no_permission.ui=你没有权限打开虚空仓库界面。
 voidvault.messages.open_failed.self=无法打开您的虚空仓库。
 voidvault.messages.open_failed.other=无法打开目标虚空仓库。
 voidvault.messages.players_only=此命令只能由玩家使用。
