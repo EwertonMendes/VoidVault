@@ -17,7 +17,7 @@ The project is designed to be easy to maintain, fork, and contribute to, while k
 Join the best Brazilian RPG server, click the image below and join our discord:
 Participe do melhor servidor de RPG do Brasil! Clique na imagem abaixo e entre no nosso Discord:
 
-**Server IP**: `enx-cirion-69.enx.host:11276`
+**Server IP**: `jogar.hybrasa.com.br:11276`
 
 <a href="https://discord.gg/cHEMmhXQ9K" target="_blank" rel="noopener noreferrer">
   <img width="468" height="60" alt="hybrasa_banner" src="https://github.com/user-attachments/assets/d78562ce-97a5-405d-a622-10ab4989345e" />
