@@ -1,0 +1,263 @@
+$Common = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #E8FFE8), Background: #1A3A24(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #285C38(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #347448(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #7F9184), Background: #17251B(0.80))
+);
+
+@SecondaryButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #EEDCFF), Background: #251036(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #462066(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #6E35A0(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #796B86), Background: #17101E(0.80))
+);
+
+@AccentButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFE4FF), Background: #3A1A3A(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #5A2A5A(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #7A3A7A(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #7C697C), Background: #211421(0.80))
+);
+
+@CloseButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #F1E5FF), Background: #2F1644(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #572779(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #7538A5(0.98))
+);
+
+Group {
+  LayoutMode: Center;
+  Background: #000000(0.52);
+  Group #Panel {
+    Background: #0B0612(0.99); OutlineColor: #7A39B4(0.65); OutlineSize: 1;
+    Anchor: (Width: 900, Height: 820); Padding: (Top: 20, Bottom: 20, Left: 28, Right: 28); LayoutMode: Top;
+    Group #HeaderGlow { Anchor: (Height: 3, Bottom: 12); Background: #A550E4(0.88); }
+    Label #Title { Style: (FontSize: 30, RenderBold: true, HorizontalAlignment: Center, TextColor: #E7B2FF); Anchor: (Height: 38); Text: "Choose Item Icon"; }
+    Label #Subtitle { Style: (FontSize: 14, HorizontalAlignment: Center, TextColor: #DCD1EA); Anchor: (Height: 24, Bottom: 10); Text: "Search and select any available item"; }
+    Group #SearchRow { LayoutMode: Left; Anchor: (Height: 40, Bottom: 12);
+      TextField #SearchField { Style: $Common.@DefaultInputFieldStyle; Background: $Common.@InputBoxBackground; OutlineColor: #7A39B4(0.48); OutlineSize: 1; FlexWeight: 1; Anchor: (Height: 38, Right: 10); Padding: (Left: 10, Right: 10); Value: ""; PlaceholderText: "Search item name..."; MaxLength: 80; }
+      TextButton #SearchButton { Style: @PrimaryButtonStyle; Anchor: (Width: 112, Height: 38, Right: 8); Text: "Search"; }
+      TextButton #ClearSearchButton { Style: @SecondaryButtonStyle; Anchor: (Width: 112, Height: 38); Text: "Clear"; }
+    }
+    Group #Grid { Background: #12081D(0.88); OutlineColor: #8C44CC(0.28); OutlineSize: 1; Anchor: (Height: 490, Bottom: 10); Padding: (Top: 10, Bottom: 10, Left: 10, Right: 10); LayoutMode: Top;
+      Group #IconRow0 { LayoutMode: Left; Anchor: (Height: 108, Bottom: 10);
+        Group #IconCell0 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton0 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot0 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName0 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell1 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton1 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot1 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName1 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell2 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton2 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot2 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName2 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell3 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton3 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot3 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName3 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell4 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton4 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot4 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName4 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell5 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton5 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot5 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName5 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+      }
+      Group #IconRow1 { LayoutMode: Left; Anchor: (Height: 108, Bottom: 10);
+        Group #IconCell6 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton6 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot6 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName6 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell7 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton7 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot7 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName7 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell8 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton8 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot8 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName8 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell9 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton9 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot9 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName9 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell10 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton10 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot10 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName10 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell11 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton11 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot11 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName11 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+      }
+      Group #IconRow2 { LayoutMode: Left; Anchor: (Height: 108, Bottom: 10);
+        Group #IconCell12 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton12 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot12 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName12 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell13 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton13 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot13 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName13 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell14 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton14 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot14 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName14 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell15 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton15 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot15 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName15 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell16 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton16 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot16 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName16 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell17 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton17 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot17 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName17 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+      }
+      Group #IconRow3 { LayoutMode: Left; Anchor: (Height: 108);
+        Group #IconCell18 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton18 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot18 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName18 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell19 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton19 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot19 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName19 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell20 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton20 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot20 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName20 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell21 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton21 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot21 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName21 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell22 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108, Right: 12); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton22 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot22 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName22 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+        Group #IconCell23 {
+          Background: #170A24(0.84); OutlineColor: #7A39B4(0.30); OutlineSize: 1;
+          Anchor: (Width: 124, Height: 108); Padding: (Top: 8, Bottom: 6, Left: 6, Right: 6); LayoutMode: Top;
+          Button #IconButton23 { Background: #100719; OutlineColor: #7A39B4(0.42); OutlineSize: 1; Anchor: (Height: 72, Bottom: 5); LayoutMode: Center;
+            ItemIcon #IconSlot23 { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Label #IconName23 { Style: (FontSize: 9, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); Anchor: (Height: 19); Text: "Item"; }
+        }
+      }
+      Label #NoResultsLabel { Style: (FontSize: 15, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #C9B4D9); Anchor: (Height: 40); Text: "No items found"; Visible: false; }
+    }
+    Group #ResultRow { LayoutMode: Left; Anchor: (Height: 24, Bottom: 8);
+      Label #ResultLabel { Style: (FontSize: 12, TextColor: #A58BB9); FlexWeight: 1; Anchor: (Height: 22); Text: "0 items"; }
+      Label #StatusLabel { Style: (FontSize: 12, HorizontalAlignment: End, TextColor: #FF8095); Anchor: (Width: 360, Height: 22); Text: ""; }
+    }
+    Group #PaginationRow { LayoutMode: Left; Anchor: (Height: 40, Bottom: 8);
+      TextButton #PreviousButton { Style: @SecondaryButtonStyle; Anchor: (Width: 110, Height: 38); Text: "<"; }
+      Label #PageLabel { Style: (FontSize: 13, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); FlexWeight: 1; Anchor: (Height: 38); Text: "Page 1 / 1"; }
+      TextButton #NextButton { Style: @SecondaryButtonStyle; Anchor: (Width: 110, Height: 38); Text: ">"; }
+    }
+    Group #FooterSpacer { FlexWeight: 1; }
+    Group #BottomRow { LayoutMode: Left; Anchor: (Height: 42);
+      TextButton #BackButton { Style: @SecondaryButtonStyle; Anchor: (Width: 120, Height: 40, Right: 12); Text: "Back"; }
+      TextButton #DefaultIconButton { Style: @AccentButtonStyle; FlexWeight: 1; Anchor: (Height: 40, Right: 12); Text: "Use default icon"; }
+      TextButton #CloseButton { Style: @CloseButtonStyle; Anchor: (Width: 120, Height: 40); Text: "Close"; }
+    }
+  }
+}

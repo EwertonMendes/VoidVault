@@ -1,192 +1,217 @@
-@VaultButtonStyle = (
-  Default: (
-    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFF4FF),
-    Background: #2A123F(0.96)
-  ),
-  Hovered: (
-    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
-    Background: #5E2B86(0.98)
-  ),
-  Pressed: (
-    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
-    Background: #7D40AD(0.98)
-  )
+$Common = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #E8FFE8), Background: #1A3A24(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #285C38(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #347448(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #7F9184), Background: #17251B(0.80))
 );
-@SmallButtonStyle = (
-  Default: (
-    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #EEDCFF),
-    Background: #251036(0.96)
-  ),
-  Hovered: (
-    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
-    Background: #462066(0.98)
-  ),
-  Pressed: (
-    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
-    Background: #6E35A0(0.98)
-  )
+
+@SecondaryButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #EEDCFF), Background: #251036(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #462066(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #6E35A0(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #796B86), Background: #17101E(0.80))
 );
-@CancelButtonStyle = (
-  Default: (
-    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #F1E5FF),
-    Background: #2F1644(0.98)
-  ),
-  Hovered: (
-    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
-    Background: #572779(0.98)
-  ),
-  Pressed: (
-    LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 16, TextColor: #FFFFFF),
-    Background: #7538A5(0.98)
-  )
+
+@AccentButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFE4FF), Background: #3A1A3A(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #5A2A5A(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #7A3A7A(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #7C697C), Background: #211421(0.80))
+);
+
+@CloseButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #F1E5FF), Background: #2F1644(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #572779(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #7538A5(0.98))
 );
 
 Group {
   LayoutMode: Center;
-  Background: #000000(0.42);
-
+  Background: #000000(0.48);
   Group #Panel {
-    Background: #0B0612(0.97);
-    OutlineColor: #7A39B4(0.55);
-    OutlineSize: 1;
-    Anchor: (Width: 670, Height: 650);
-    Padding: (Top: 28, Bottom: 28, Left: 34, Right: 34);
-    LayoutMode: Top;
-
-    Group #HeaderGlow {
-      Anchor: (Height: 3, Bottom: 18);
-      Background: #A550E4(0.85);
-    }
-
-    Label #Title {
-      Style: (FontSize: 38, RenderBold: true, HorizontalAlignment: Center, TextColor: #E7B2FF);
-      Anchor: (Height: 48);
-      Text: "Void Vault";
-    }
-
-    Label #Subtitle {
-      Style: (FontSize: 17, HorizontalAlignment: Center, TextColor: #DCD1EA);
-      Anchor: (Height: 30, Top: 4);
-      Text: "Choose which vault you want to open";
-    }
-
-    Label #RenameHint {
-      Style: (FontSize: 13, HorizontalAlignment: Center, TextColor: #BCA5D7);
-      Anchor: (Height: 22, Top: 2);
-      Text: "Use /vv rename to label a vault";
-    }
-
-    Group #Divider {
-      Anchor: (Height: 2, Top: 14, Bottom: 18);
-      Background: #C073FF(0.45);
-    }
-
-    Group #VaultFrame {
-      Background: #170A24(0.9);
-      OutlineColor: #8C44CC(0.28);
-      OutlineSize: 1;
-      Anchor: (Height: 275);
-      Padding: (Top: 14, Bottom: 4, Left: 16, Right: 16);
-      LayoutMode: Top;
-
-      Group #VaultRow0 {
-        LayoutMode: Left;
-        Anchor: (Height: 116, Bottom: 14);
-
-        TextButton #VaultButton0 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 12);
-          Text: "Vault 1";
+    Background: #0B0612(0.98); OutlineColor: #7A39B4(0.60); OutlineSize: 1;
+    Anchor: (Width: 860, Height: 850); Padding: (Top: 20, Bottom: 20, Left: 28, Right: 28); LayoutMode: Top;
+    Group #HeaderGlow { Anchor: (Height: 3, Bottom: 12); Background: #A550E4(0.88); }
+    Label #Title { Style: (FontSize: 32, RenderBold: true, HorizontalAlignment: Center, TextColor: #E7B2FF); Anchor: (Height: 42); Text: "Void Vault"; }
+    Label #Subtitle { Style: (FontSize: 15, HorizontalAlignment: Center, TextColor: #DCD1EA); Anchor: (Height: 24, Top: 2, Bottom: 10); Text: "Choose which vault you want to open"; }
+    Group #CardArea { Background: #170A24(0.92); OutlineColor: #8C44CC(0.32); OutlineSize: 1; Anchor: (Height: 580, Bottom: 14); Padding: (Top: 8, Bottom: 8, Left: 8, Right: 8); LayoutMode: Top;
+      Group #CardRow0 { LayoutMode: Left; Anchor: (Height: 180, Bottom: 8);
+        Group #Card0 {
+          Background: #1E0E30(0.96); OutlineColor: #7A39B4(0.42); OutlineSize: 1;
+          Anchor: (Width: 380, Height: 178, Right: 12);
+          Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12); LayoutMode: Top;
+          Group #CardAccent0 { Anchor: (Height: 3, Bottom: 8); Background: #7A39B4; }
+          Group #CardHeader0 { LayoutMode: Left; Anchor: (Height: 40, Bottom: 7);
+            Group #CardIconBadge0 { Background: #2A123F; OutlineColor: #9A59D4(0.55); OutlineSize: 1; Anchor: (Width: 48, Height: 40, Right: 9); LayoutMode: Center;
+              ItemIcon #CardIcon0 { Anchor: (Width: 38, Height: 34); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+              Label #CardIconFallback0 { Style: (FontSize: 11, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFFFFF); Anchor: (Width: 38, Height: 34); Text: "VV"; Visible: false; }
+            }
+            Group #CardTitleArea0 { LayoutMode: Top; Anchor: (Width: 194, Height: 40, Right: 5);
+              Label #CardName0 { Style: (FontSize: 15, RenderBold: true, TextColor: #F0D8FF); Anchor: (Height: 22); Text: "Vault"; }
+              Label #CardNumber0 { Style: (FontSize: 11, TextColor: #A58BB9); Anchor: (Height: 16); Text: "Vault 1"; }
+            }
+            Label #CardDefaultBadge0 { Style: (FontSize: 9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Background: #3A2D12(0.88); Anchor: (Width: 58, Height: 20, Right: 3); Text: "DEFAULT"; Visible: false; }
+            Label #CardFavoriteBadge0 { Style: (FontSize: 17, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Anchor: (Width: 20, Height: 20); Text: "*"; Visible: false; }
+          }
+          Group #CardUpperSpacer0 { FlexWeight: 1; }
+          Label #CardOccupancy0 { Style: (FontSize: 12, TextColor: #C9B4D9); Anchor: (Height: 16, Bottom: 7); Text: "0 / 9 slots"; }
+          ProgressBar #CardProgressBar0 { Anchor: (Height: 8, Bottom: 8); Background: #160A22; Bar: #7A39B4; Value: 0; }
+          Label #CardOverflowBadge0 { Style: (FontSize: 10, RenderBold: true, TextColor: #FF8095); Anchor: (Height: 14); Text: ""; Visible: false; }
+          Group #CardLowerSpacer0 { FlexWeight: 1; }
+          Group #CardActions0 { LayoutMode: Left; Anchor: (Height: 34);
+            TextButton #CardOpen0 { Style: @PrimaryButtonStyle; Anchor: (Width: 166, Height: 34, Right: 10); Text: "Open"; }
+            TextButton #CardManage0 { Style: @SecondaryButtonStyle; Anchor: (Width: 166, Height: 34); Text: "Manage"; }
+          }
         }
-
-        TextButton #VaultButton1 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 12);
-          Text: "Vault 2";
-        }
-
-        TextButton #VaultButton2 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 12);
-          Text: "Vault 3";
-        }
-
-        TextButton #VaultButton3 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 12);
-          Text: "Vault 4";
-        }
-
-        TextButton #VaultButton4 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 0);
-          Text: "Vault 5";
+        Group #Card1 {
+          Background: #1E0E30(0.96); OutlineColor: #7A39B4(0.42); OutlineSize: 1;
+          Anchor: (Width: 380, Height: 178);
+          Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12); LayoutMode: Top;
+          Group #CardAccent1 { Anchor: (Height: 3, Bottom: 8); Background: #7A39B4; }
+          Group #CardHeader1 { LayoutMode: Left; Anchor: (Height: 40, Bottom: 7);
+            Group #CardIconBadge1 { Background: #2A123F; OutlineColor: #9A59D4(0.55); OutlineSize: 1; Anchor: (Width: 48, Height: 40, Right: 9); LayoutMode: Center;
+              ItemIcon #CardIcon1 { Anchor: (Width: 38, Height: 34); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+              Label #CardIconFallback1 { Style: (FontSize: 11, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFFFFF); Anchor: (Width: 38, Height: 34); Text: "VV"; Visible: false; }
+            }
+            Group #CardTitleArea1 { LayoutMode: Top; Anchor: (Width: 194, Height: 40, Right: 5);
+              Label #CardName1 { Style: (FontSize: 15, RenderBold: true, TextColor: #F0D8FF); Anchor: (Height: 22); Text: "Vault"; }
+              Label #CardNumber1 { Style: (FontSize: 11, TextColor: #A58BB9); Anchor: (Height: 16); Text: "Vault 1"; }
+            }
+            Label #CardDefaultBadge1 { Style: (FontSize: 9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Background: #3A2D12(0.88); Anchor: (Width: 58, Height: 20, Right: 3); Text: "DEFAULT"; Visible: false; }
+            Label #CardFavoriteBadge1 { Style: (FontSize: 17, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Anchor: (Width: 20, Height: 20); Text: "*"; Visible: false; }
+          }
+          Group #CardUpperSpacer1 { FlexWeight: 1; }
+          Label #CardOccupancy1 { Style: (FontSize: 12, TextColor: #C9B4D9); Anchor: (Height: 16, Bottom: 7); Text: "0 / 9 slots"; }
+          ProgressBar #CardProgressBar1 { Anchor: (Height: 8, Bottom: 8); Background: #160A22; Bar: #7A39B4; Value: 0; }
+          Label #CardOverflowBadge1 { Style: (FontSize: 10, RenderBold: true, TextColor: #FF8095); Anchor: (Height: 14); Text: ""; Visible: false; }
+          Group #CardLowerSpacer1 { FlexWeight: 1; }
+          Group #CardActions1 { LayoutMode: Left; Anchor: (Height: 34);
+            TextButton #CardOpen1 { Style: @PrimaryButtonStyle; Anchor: (Width: 166, Height: 34, Right: 10); Text: "Open"; }
+            TextButton #CardManage1 { Style: @SecondaryButtonStyle; Anchor: (Width: 166, Height: 34); Text: "Manage"; }
+          }
         }
       }
-
-      Group #VaultRow1 {
-        LayoutMode: Left;
-        Anchor: (Height: 116, Bottom: 14);
-
-        TextButton #VaultButton5 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 12);
-          Text: "Vault 6";
+      Group #CardRow1 { LayoutMode: Left; Anchor: (Height: 180, Bottom: 8);
+        Group #Card2 {
+          Background: #1E0E30(0.96); OutlineColor: #7A39B4(0.42); OutlineSize: 1;
+          Anchor: (Width: 380, Height: 178, Right: 12);
+          Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12); LayoutMode: Top;
+          Group #CardAccent2 { Anchor: (Height: 3, Bottom: 8); Background: #7A39B4; }
+          Group #CardHeader2 { LayoutMode: Left; Anchor: (Height: 40, Bottom: 7);
+            Group #CardIconBadge2 { Background: #2A123F; OutlineColor: #9A59D4(0.55); OutlineSize: 1; Anchor: (Width: 48, Height: 40, Right: 9); LayoutMode: Center;
+              ItemIcon #CardIcon2 { Anchor: (Width: 38, Height: 34); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+              Label #CardIconFallback2 { Style: (FontSize: 11, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFFFFF); Anchor: (Width: 38, Height: 34); Text: "VV"; Visible: false; }
+            }
+            Group #CardTitleArea2 { LayoutMode: Top; Anchor: (Width: 194, Height: 40, Right: 5);
+              Label #CardName2 { Style: (FontSize: 15, RenderBold: true, TextColor: #F0D8FF); Anchor: (Height: 22); Text: "Vault"; }
+              Label #CardNumber2 { Style: (FontSize: 11, TextColor: #A58BB9); Anchor: (Height: 16); Text: "Vault 1"; }
+            }
+            Label #CardDefaultBadge2 { Style: (FontSize: 9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Background: #3A2D12(0.88); Anchor: (Width: 58, Height: 20, Right: 3); Text: "DEFAULT"; Visible: false; }
+            Label #CardFavoriteBadge2 { Style: (FontSize: 17, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Anchor: (Width: 20, Height: 20); Text: "*"; Visible: false; }
+          }
+          Group #CardUpperSpacer2 { FlexWeight: 1; }
+          Label #CardOccupancy2 { Style: (FontSize: 12, TextColor: #C9B4D9); Anchor: (Height: 16, Bottom: 7); Text: "0 / 9 slots"; }
+          ProgressBar #CardProgressBar2 { Anchor: (Height: 8, Bottom: 8); Background: #160A22; Bar: #7A39B4; Value: 0; }
+          Label #CardOverflowBadge2 { Style: (FontSize: 10, RenderBold: true, TextColor: #FF8095); Anchor: (Height: 14); Text: ""; Visible: false; }
+          Group #CardLowerSpacer2 { FlexWeight: 1; }
+          Group #CardActions2 { LayoutMode: Left; Anchor: (Height: 34);
+            TextButton #CardOpen2 { Style: @PrimaryButtonStyle; Anchor: (Width: 166, Height: 34, Right: 10); Text: "Open"; }
+            TextButton #CardManage2 { Style: @SecondaryButtonStyle; Anchor: (Width: 166, Height: 34); Text: "Manage"; }
+          }
         }
-
-        TextButton #VaultButton6 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 12);
-          Text: "Vault 7";
+        Group #Card3 {
+          Background: #1E0E30(0.96); OutlineColor: #7A39B4(0.42); OutlineSize: 1;
+          Anchor: (Width: 380, Height: 178);
+          Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12); LayoutMode: Top;
+          Group #CardAccent3 { Anchor: (Height: 3, Bottom: 8); Background: #7A39B4; }
+          Group #CardHeader3 { LayoutMode: Left; Anchor: (Height: 40, Bottom: 7);
+            Group #CardIconBadge3 { Background: #2A123F; OutlineColor: #9A59D4(0.55); OutlineSize: 1; Anchor: (Width: 48, Height: 40, Right: 9); LayoutMode: Center;
+              ItemIcon #CardIcon3 { Anchor: (Width: 38, Height: 34); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+              Label #CardIconFallback3 { Style: (FontSize: 11, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFFFFF); Anchor: (Width: 38, Height: 34); Text: "VV"; Visible: false; }
+            }
+            Group #CardTitleArea3 { LayoutMode: Top; Anchor: (Width: 194, Height: 40, Right: 5);
+              Label #CardName3 { Style: (FontSize: 15, RenderBold: true, TextColor: #F0D8FF); Anchor: (Height: 22); Text: "Vault"; }
+              Label #CardNumber3 { Style: (FontSize: 11, TextColor: #A58BB9); Anchor: (Height: 16); Text: "Vault 1"; }
+            }
+            Label #CardDefaultBadge3 { Style: (FontSize: 9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Background: #3A2D12(0.88); Anchor: (Width: 58, Height: 20, Right: 3); Text: "DEFAULT"; Visible: false; }
+            Label #CardFavoriteBadge3 { Style: (FontSize: 17, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Anchor: (Width: 20, Height: 20); Text: "*"; Visible: false; }
+          }
+          Group #CardUpperSpacer3 { FlexWeight: 1; }
+          Label #CardOccupancy3 { Style: (FontSize: 12, TextColor: #C9B4D9); Anchor: (Height: 16, Bottom: 7); Text: "0 / 9 slots"; }
+          ProgressBar #CardProgressBar3 { Anchor: (Height: 8, Bottom: 8); Background: #160A22; Bar: #7A39B4; Value: 0; }
+          Label #CardOverflowBadge3 { Style: (FontSize: 10, RenderBold: true, TextColor: #FF8095); Anchor: (Height: 14); Text: ""; Visible: false; }
+          Group #CardLowerSpacer3 { FlexWeight: 1; }
+          Group #CardActions3 { LayoutMode: Left; Anchor: (Height: 34);
+            TextButton #CardOpen3 { Style: @PrimaryButtonStyle; Anchor: (Width: 166, Height: 34, Right: 10); Text: "Open"; }
+            TextButton #CardManage3 { Style: @SecondaryButtonStyle; Anchor: (Width: 166, Height: 34); Text: "Manage"; }
+          }
         }
-
-        TextButton #VaultButton7 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 12);
-          Text: "Vault 8";
+      }
+      Group #CardRow2 { LayoutMode: Left; Anchor: (Height: 180);
+        Group #Card4 {
+          Background: #1E0E30(0.96); OutlineColor: #7A39B4(0.42); OutlineSize: 1;
+          Anchor: (Width: 380, Height: 178, Right: 12);
+          Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12); LayoutMode: Top;
+          Group #CardAccent4 { Anchor: (Height: 3, Bottom: 8); Background: #7A39B4; }
+          Group #CardHeader4 { LayoutMode: Left; Anchor: (Height: 40, Bottom: 7);
+            Group #CardIconBadge4 { Background: #2A123F; OutlineColor: #9A59D4(0.55); OutlineSize: 1; Anchor: (Width: 48, Height: 40, Right: 9); LayoutMode: Center;
+              ItemIcon #CardIcon4 { Anchor: (Width: 38, Height: 34); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+              Label #CardIconFallback4 { Style: (FontSize: 11, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFFFFF); Anchor: (Width: 38, Height: 34); Text: "VV"; Visible: false; }
+            }
+            Group #CardTitleArea4 { LayoutMode: Top; Anchor: (Width: 194, Height: 40, Right: 5);
+              Label #CardName4 { Style: (FontSize: 15, RenderBold: true, TextColor: #F0D8FF); Anchor: (Height: 22); Text: "Vault"; }
+              Label #CardNumber4 { Style: (FontSize: 11, TextColor: #A58BB9); Anchor: (Height: 16); Text: "Vault 1"; }
+            }
+            Label #CardDefaultBadge4 { Style: (FontSize: 9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Background: #3A2D12(0.88); Anchor: (Width: 58, Height: 20, Right: 3); Text: "DEFAULT"; Visible: false; }
+            Label #CardFavoriteBadge4 { Style: (FontSize: 17, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Anchor: (Width: 20, Height: 20); Text: "*"; Visible: false; }
+          }
+          Group #CardUpperSpacer4 { FlexWeight: 1; }
+          Label #CardOccupancy4 { Style: (FontSize: 12, TextColor: #C9B4D9); Anchor: (Height: 16, Bottom: 7); Text: "0 / 9 slots"; }
+          ProgressBar #CardProgressBar4 { Anchor: (Height: 8, Bottom: 8); Background: #160A22; Bar: #7A39B4; Value: 0; }
+          Label #CardOverflowBadge4 { Style: (FontSize: 10, RenderBold: true, TextColor: #FF8095); Anchor: (Height: 14); Text: ""; Visible: false; }
+          Group #CardLowerSpacer4 { FlexWeight: 1; }
+          Group #CardActions4 { LayoutMode: Left; Anchor: (Height: 34);
+            TextButton #CardOpen4 { Style: @PrimaryButtonStyle; Anchor: (Width: 166, Height: 34, Right: 10); Text: "Open"; }
+            TextButton #CardManage4 { Style: @SecondaryButtonStyle; Anchor: (Width: 166, Height: 34); Text: "Manage"; }
+          }
         }
-
-        TextButton #VaultButton8 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 12);
-          Text: "Vault 9";
-        }
-
-        TextButton #VaultButton9 {
-          Style: @VaultButtonStyle;
-          Anchor: (Width: 104, Height: 105, Right: 0);
-          Text: "Vault 10";
+        Group #Card5 {
+          Background: #1E0E30(0.96); OutlineColor: #7A39B4(0.42); OutlineSize: 1;
+          Anchor: (Width: 380, Height: 178);
+          Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12); LayoutMode: Top;
+          Group #CardAccent5 { Anchor: (Height: 3, Bottom: 8); Background: #7A39B4; }
+          Group #CardHeader5 { LayoutMode: Left; Anchor: (Height: 40, Bottom: 7);
+            Group #CardIconBadge5 { Background: #2A123F; OutlineColor: #9A59D4(0.55); OutlineSize: 1; Anchor: (Width: 48, Height: 40, Right: 9); LayoutMode: Center;
+              ItemIcon #CardIcon5 { Anchor: (Width: 38, Height: 34); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+              Label #CardIconFallback5 { Style: (FontSize: 11, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFFFFF); Anchor: (Width: 38, Height: 34); Text: "VV"; Visible: false; }
+            }
+            Group #CardTitleArea5 { LayoutMode: Top; Anchor: (Width: 194, Height: 40, Right: 5);
+              Label #CardName5 { Style: (FontSize: 15, RenderBold: true, TextColor: #F0D8FF); Anchor: (Height: 22); Text: "Vault"; }
+              Label #CardNumber5 { Style: (FontSize: 11, TextColor: #A58BB9); Anchor: (Height: 16); Text: "Vault 1"; }
+            }
+            Label #CardDefaultBadge5 { Style: (FontSize: 9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Background: #3A2D12(0.88); Anchor: (Width: 58, Height: 20, Right: 3); Text: "DEFAULT"; Visible: false; }
+            Label #CardFavoriteBadge5 { Style: (FontSize: 17, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #FFD66B); Anchor: (Width: 20, Height: 20); Text: "*"; Visible: false; }
+          }
+          Group #CardUpperSpacer5 { FlexWeight: 1; }
+          Label #CardOccupancy5 { Style: (FontSize: 12, TextColor: #C9B4D9); Anchor: (Height: 16, Bottom: 7); Text: "0 / 9 slots"; }
+          ProgressBar #CardProgressBar5 { Anchor: (Height: 8, Bottom: 8); Background: #160A22; Bar: #7A39B4; Value: 0; }
+          Label #CardOverflowBadge5 { Style: (FontSize: 10, RenderBold: true, TextColor: #FF8095); Anchor: (Height: 14); Text: ""; Visible: false; }
+          Group #CardLowerSpacer5 { FlexWeight: 1; }
+          Group #CardActions5 { LayoutMode: Left; Anchor: (Height: 34);
+            TextButton #CardOpen5 { Style: @PrimaryButtonStyle; Anchor: (Width: 166, Height: 34, Right: 10); Text: "Open"; }
+            TextButton #CardManage5 { Style: @SecondaryButtonStyle; Anchor: (Width: 166, Height: 34); Text: "Manage"; }
+          }
         }
       }
     }
-
-    Group #Footer {
-      LayoutMode: Left;
-      Anchor: (Top: 18, Height: 48);
-
-      TextButton #PreviousButton {
-        Style: @SmallButtonStyle;
-        Anchor: (Width: 130, Height: 44);
-        Text: "<";
-      }
-
-      Label #PageLabel {
-        Style: (FontSize: 16, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C9E7);
-        Anchor: (Width: 342, Height: 44);
-        Text: "Page 1 / 1";
-      }
-
-      TextButton #NextButton {
-        Style: @SmallButtonStyle;
-        Anchor: (Width: 130, Height: 44);
-        Text: ">";
-      }
+    Group #FooterSpacer { FlexWeight: 1; }
+    Group #Footer { LayoutMode: Left; Anchor: (Height: 42, Bottom: 10);
+      TextButton #PreviousButton { Style: @SecondaryButtonStyle; Anchor: (Width: 120, Height: 40); Text: "<"; }
+      Label #PageLabel { Style: (FontSize: 14, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); FlexWeight: 1; Anchor: (Height: 40); Text: "Page 1 / 1"; }
+      TextButton #NextButton { Style: @SecondaryButtonStyle; Anchor: (Width: 120, Height: 40); Text: ">"; }
     }
-
-    TextButton #CloseButton {
-      Style: @CancelButtonStyle;
-      Anchor: (Top: 18, Height: 48);
-      Text: "Cancel";
-    }
+    TextButton #CloseButton { Style: @CloseButtonStyle; Anchor: (Height: 42); Text: "Cancel"; }
   }
 }

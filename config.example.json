@@ -1,5 +1,5 @@
 {
-  "configVersion": "2",
+  "configVersion": "3",
   "database": {
     "type": "sqlite",
     "file": "mods/VoidVault/voidvault.db"
@@ -148,6 +148,13 @@
     "preventDoubleOpen": true,
     "saveOnEveryChange": true,
     "saveOnClose": true,
-    "saveOnShutdown": true
+    "saveOnShutdown": true,
+    "saveDebounceMillis": 750,
+    "saveMaxDelayMillis": 5000
+  },
+  "organization": {
+    "sortEnabled": true,
+    "depositMatchingEnabled": true,
+    "depositMatchingIncludeHotbar": false
   }
 }

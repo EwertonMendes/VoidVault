@@ -39,7 +39,7 @@ Participe do melhor servidor de RPG do Brasil! Clique na imagem abaixo e entre n
 
 | Feature                                               | Description                                                  |
 | ----------------------------------------------------- | ------------------------------------------------------------ |
-| `/vv` and `/voidvault` command roots                  | Main player and admin command entry points.                  |
+| `/vv` and `/voidvault` command roots                  | Open the effective default vault and expose admin commands. |
 | Physical craftable `Void Vault` block                 | Allows players to access their vault through a block.        |
 | Custom VoidVault opening sound                        | Plays when opening the physical vault block.                 |
 | SQLite storage by default                             | Stores vault data locally.                                   |
@@ -54,6 +54,11 @@ Participe do melhor servidor de RPG do Brasil! Clique na imagem abaixo e entre n
 | Configurable crafting enable/disable flag             | Allows server owners to disable crafting.                    |
 | Build-ready Gradle project with ShadowJar             | Ready for local builds and releases.                         |
 | Local `runServer` Gradle task for development servers | Starts a local Hytale test server.                           |
+| Card-based vault selector                             | Shows six spacious cards per page with occupancy, overflow and item icons. |
+| Vault management page                                 | Rename, choose a real item icon, use 25 preset colors or a custom HEX color, favorite and set default. |
+| Vault organization                                    | Deterministically compacts and sorts visible vault slots.   |
+| Deposit similar items                                 | Moves only stack-compatible items already in the vault.     |
+| Debounced persistence                                 | Groups rapid inventory changes while still flushing safely.|
 
 ---
 
@@ -61,8 +66,8 @@ Participe do melhor servidor de RPG do Brasil! Clique na imagem abaixo e entre n
 
 | Command                                   | Description                                        |
 | ----------------------------------------- | -------------------------------------------------- |
-| `/vv`                                     | Opens the player's main vault.                     |
-| `/voidvault`                              | Opens the player's main vault.                     |
+| `/vv`                                     | Opens the player's effective default vault.        |
+| `/voidvault`                              | Opens the player's effective default vault.        |
 | `/voidvault help`                         | Shows available VoidVault commands.                |
 | `/voidvault overflow`                     | Shows hidden overflow item slots.                  |
 | `/voidvault overflow <number\|all>`       | Shows overflow for a specific vault or all vaults. |
@@ -160,7 +165,8 @@ Main config sections:
 | `multi-vaults` | Multi-vault access and vault tiers.          |
 | `crafting`     | Crafting enable/disable behavior.            |
 | `importer`     | Legacy EnderChest import paths and behavior. |
-| `safety`       | Save and safety behavior.                    |
+| `safety`       | Save, debounce and safety behavior.          |
+| `organization` | Sorting and deposit-similar behavior.        |
 
 ---
 
@@ -168,7 +174,13 @@ Main config sections:
 
 Multi-vaults are disabled by default. Existing servers keep the same `/vv` and block behavior until `multi-vaults.enabled` is set to `true`.
 
-When enabled, `/vv` still opens Vault 1, `/vv <number>` opens a specific vault if the player has access, and `/vv ui` opens the selector page. Players can use `/vv rename <number> <name>` to show a custom label under the default translated vault name in the selector, or `/vv rename <number> reset` to clear it. Interacting with the physical Void Vault block opens Vault 1 directly when the player only has one vault, or opens the selector page when the player has multiple vaults.
+When enabled, `/vv` opens the player's effective default vault, `/vv <number>` opens a specific accessible vault, and `/vv ui` opens the card-based selector. The selector displays occupancy, overflow and the selected Hytale item icon. Its management page allows renaming, choosing an item icon, selecting from 25 preset accent colors, entering a custom HEX color, or opening a dedicated native ColorPicker page, as well as favoriting, setting a default vault, sorting, and depositing similar items. The existing `/vv rename <number> <name|reset>` command remains available.
+
+The item-icon picker reads the server's live item registry, so it supports base-game items and items registered by other installed asset packs. It renders only 24 results at a time, supports server-side search and pagination, and shares a lazy registry index across picker pages. Selecting an icon is validated against the live registry. If a saved item is later removed, VoidVault keeps the stored preference, displays a safe fallback, and lets the player replace or reset it without breaking the UI.
+
+The color area offers a larger translated preset palette, a server-validated HEX field, and a button that opens the native Hytale `ColorPicker` on a dedicated page. Keeping the native picker out of the initial management document prevents a picker-rendering failure from disconnecting players merely by opening **Manage**. The dedicated picker uses the shared Hytale default style and a full-size 310×290 viewport; its changes remain a page-local draft until Apply is pressed, avoiding a database write for every mouse movement. The same color resolver is used by the management panel and selector cards, so custom colors remain visually consistent.
+
+If the configured default vault becomes temporarily inaccessible, `/vv` safely falls back to Vault 1 without deleting the preference. Interacting with the physical Void Vault block still opens Vault 1 directly when the player only has one vault, or opens the selector when the player has multiple vaults.
 
 Vault count is controlled by `multi-vaults.defaultVaults`, `multi-vaults.maxVaults`, permission tiers and LuckPerms groups. The hard safety limit is 10000 vaults per player. Losing access to extra vaults never deletes data; locked vaults remain stored and become accessible again if the player regains permission.
 
@@ -280,7 +292,7 @@ The legacy table is kept for compatibility:
 void_vaults
 ```
 
-VoidVault 0.2.0 stores active vault data in:
+VoidVault stores active vault data in:
 
 ```txt
 void_vault_inventories
@@ -297,6 +309,14 @@ last_updated
 ```
 
 Vault 1 is mirrored to the legacy table for safer rollback. The `inventory_data` format is intentionally close to the legacy EnderChest format so migrations remain simple and auditable.
+
+VoidVault 0.3.0 stores per-vault presentation metadata in:
+
+```txt
+void_vault_metadata
+```
+
+This table preserves the custom name and adds an optional registered Hytale item ID for the icon, a validated preset color ID or normalized `#RRGGBB` custom color, favorite state, and a single explicit default vault per player. Existing schema-v2 databases are migrated automatically and idempotently. Item IDs received from the UI are never trusted: they are resolved from the server-side picker page and validated against the current item registry before persistence.
 
 ---
 
@@ -405,6 +425,14 @@ Recommended manual tests:
 * Confirm the physical block opens the selector for players with multiple vaults.
 * Confirm locked extra vaults remain stored after permission changes.
 * Confirm `reload` applies config changes.
+* Open `/vv ui` and verify the selector renders six cards per page without disconnecting the client.
+* Type a new name in the management page, click Save, and confirm the exact typed value is used.
+* Open the item-icon picker, search by the translated item name, submit with Enter and with the Search button, change pages, select an item, and confirm the same native icon rendering appears on both the vault card and management page.
+* Remove or disable an asset pack that supplied a selected icon in a disposable test environment and confirm VoidVault shows its fallback without disconnecting the client.
+* Test icon, color, favorite and default-vault persistence after restart.
+* Verify sort changes only visible slots and preserves overflow.
+* Verify deposit-similar ignores incompatible metadata, equipment and the hotbar by default.
+* Move several stacks rapidly and confirm debounce persistence still survives close/restart.
 
 ---
 
@@ -417,7 +445,8 @@ src/main/java/tblack/voidvault/
   importer/      Legacy EnderChest import logic
   model/         Shared data models
   permissions/   Permission and LuckPerms integration
-  storage/       SQLite and vault inventory storage
+  service/       Metadata, summaries, sorting and deposit operations
+  storage/       SQLite, loaded vaults and debounced persistence
   systems/       Block interaction systems
   ui/            Custom UI selector pages
   util/          Shared utility classes

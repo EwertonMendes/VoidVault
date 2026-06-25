@@ -48,8 +48,9 @@ public class VoidVaultPlugin extends JavaPlugin {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                if (currentConfig == null || currentConfig.safety.saveOnShutdown) {
-                    vaultManager.saveLoaded();
+                if (vaultManager != null) {
+                    boolean saveLoadedVaults = currentConfig == null || currentConfig.safety.saveOnShutdown;
+                    vaultManager.shutdown(saveLoadedVaults);
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();

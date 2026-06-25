@@ -1,0 +1,108 @@
+$Common = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #E8FFE8), Background: #1A3A24(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #285C38(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #347448(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #7F9184), Background: #17251B(0.80))
+);
+
+@SecondaryButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #EEDCFF), Background: #251036(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #462066(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #6E35A0(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #796B86), Background: #17101E(0.80))
+);
+
+@CloseButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #F1E5FF), Background: #2F1644(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #572779(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #7538A5(0.98))
+);
+
+Group {
+  LayoutMode: Center;
+  Background: #000000(0.48);
+
+  Group #Panel {
+    Background: #0B0612(0.99);
+    OutlineColor: #7A39B4(0.72);
+    OutlineSize: 1;
+    Anchor: (Width: 430, Height: 590);
+    Padding: (Top: 20, Bottom: 20, Left: 28, Right: 28);
+    LayoutMode: Top;
+
+    Group #HeaderGlow { Anchor: (Height: 3, Bottom: 12); Background: #A550E4(0.88); }
+    Label #Title {
+      Style: (FontSize: 27, RenderBold: true, HorizontalAlignment: Center, TextColor: #E7B2FF);
+      Anchor: (Height: 34);
+      Text: "Choose Color";
+    }
+    Label #Subtitle {
+      Style: (FontSize: 13, HorizontalAlignment: Center, TextColor: #BDA7CF);
+      Anchor: (Height: 22, Top: 2, Bottom: 8);
+      Text: "Choose a custom accent color";
+    }
+
+    Group #CurrentColorRow {
+      Background: #170A24(0.78);
+      OutlineColor: #8C44CC(0.28);
+      OutlineSize: 1;
+      Anchor: (Height: 42, Bottom: 10);
+      Padding: (Left: 12, Right: 12);
+      LayoutMode: Left;
+
+      Label #CurrentColorLabel {
+        Style: (FontSize: 12, VerticalAlignment: Center, TextColor: #A58BB9);
+        FlexWeight: 1;
+        Anchor: (Height: 40);
+        Text: "Current color";
+      }
+      Group #CurrentColorSwatch {
+        Background: #7A39B4;
+        OutlineColor: #FFFFFF(0.45);
+        OutlineSize: 1;
+        Anchor: (Width: 36, Height: 28, Right: 8);
+      }
+      Label #CurrentColorValue {
+        Style: (FontSize: 12, VerticalAlignment: Center, TextColor: #EAD8F8);
+        Anchor: (Width: 88, Height: 40);
+        Text: "#7A39B4";
+      }
+    }
+
+    Group #PickerContainer {
+      Background: #12081D(0.72);
+      OutlineColor: #8C44CC(0.24);
+      OutlineSize: 1;
+      Anchor: (Height: 320, Bottom: 10);
+      LayoutMode: Center;
+
+      ColorPicker #CustomColorPicker {
+        Style: $Common.@DefaultColorPickerStyle;
+        Anchor: (Width: 310, Height: 290);
+        Value: #7A39B4;
+        Format: Rgb;
+        DisplayTextField: false;
+        ResetTransparencyWhenChangingColor: true;
+        HitTestVisible: true;
+      }
+    }
+
+    Label #StatusLabel {
+      Style: (FontSize: 12, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #C9B4D9);
+      Anchor: (Height: 24, Bottom: 6);
+      Text: "";
+    }
+
+    Group #FooterSpacer { FlexWeight: 1; }
+    Group #BottomRow {
+      LayoutMode: Left;
+      Anchor: (Height: 42);
+      TextButton #BackButton { Style: @SecondaryButtonStyle; Anchor: (Width: 104, Height: 40, Right: 10); Text: "Back"; }
+      TextButton #ApplyButton { Style: @PrimaryButtonStyle; FlexWeight: 1; Anchor: (Height: 40, Right: 10); Text: "Apply"; }
+      TextButton #CloseButton { Style: @CloseButtonStyle; Anchor: (Width: 104, Height: 40); Text: "Close"; }
+    }
+    Group #BottomSafeArea { Anchor: (Height: 14); }
+  }
+}

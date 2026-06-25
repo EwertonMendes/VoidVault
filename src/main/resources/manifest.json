@@ -1,8 +1,8 @@
 {
   "Group": "voidvault",
   "Name": "VoidVault",
-  "Version": "0.2.1",
-  "Description": "A cross-dimensional personal vault with optional multi-vault support, SQLite storage, configurable slot tiers and an EnderChest migration tool.",
+  "Version": "0.3.0",
+  "Description": "A cross-dimensional personal vault with card-based UI, favorites, defaults, sorting, deposit, debounce save, SQLite storage and multi-vault support.",
   "ServerVersion": "*",
   "Authors": [
     {

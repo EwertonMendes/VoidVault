@@ -55,6 +55,13 @@ dependencies {
     shade 'com.google.code.gson:gson:2.13.1'
     shade 'org.mongodb:bson:5.2.1'
     shade 'org.slf4j:slf4j-nop:2.0.16'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+    testImplementation 'org.mockito:mockito-core:5.17.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.17.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testCompileOnly files(serverJarPath)
+    testRuntimeOnly files(serverJarPath)
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -93,6 +100,11 @@ shadowJar {
 
 tasks.build {
     dependsOn(shadowJar)
+}
+
+test {
+    useJUnitPlatform()
+    jvmArgs = ['--enable-preview']
 }
 
 tasks.register('runServer', JavaExec) {

@@ -15,77 +15,111 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import tblack.voidvault.i18n.I18n;
+import tblack.voidvault.model.VaultSummary;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class VaultSelectorPage extends InteractiveCustomUIPage<VaultSelectorPage.SelectorEventData> {
     private static final String LAYOUT = "VoidVault/VaultSelector.ui";
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 6;
 
     private final VaultSelectorService service;
     private final VaultSelectorSession session;
+    private final List<VaultSummary> summaries;
+    private final long pageToken;
     private int page;
 
-    public VaultSelectorPage(@Nonnull PlayerRef playerRef, VaultSelectorService service, VaultSelectorSession session) {
+    public VaultSelectorPage(
+            @Nonnull PlayerRef playerRef,
+            VaultSelectorService service,
+            VaultSelectorSession session,
+            List<VaultSummary> summaries
+    ) {
         super(playerRef, CustomPageLifetime.CanDismiss, SelectorEventData.CODEC);
         this.service = service;
         this.session = session;
+        this.summaries = summaries == null ? List.of() : List.copyOf(summaries);
+        this.pageToken = session.activatePage();
     }
 
     @Override
-    public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder commands, @Nonnull UIEventBuilder events, @Nonnull Store<EntityStore> store) {
+    public void build(
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull UICommandBuilder commands,
+            @Nonnull UIEventBuilder events,
+            @Nonnull Store<EntityStore> store
+    ) {
         commands.append(LAYOUT);
         bindEvents(events);
         render(commands);
     }
 
     @Override
-    public void handleDataEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, SelectorEventData data) {
+    public void handleDataEvent(
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull Store<EntityStore> store,
+            SelectorEventData data
+    ) {
         super.handleDataEvent(ref, store, data);
+        if (!service.isActive(session) || !session.isCurrentPage(pageToken)) {
+            close();
+            return;
+        }
         if (data == null || data.action == null || data.action.isBlank()) {
             sendUpdate();
             return;
         }
 
-        String action = data.action;
-        if ("close".equals(action)) {
-            service.dismiss(session);
-            close();
-            return;
+        switch (data.action) {
+            case "close" -> {
+                service.dismiss(session);
+                close();
+            }
+            case "previous" -> {
+                page = Math.max(0, page - 1);
+                rebuild();
+            }
+            case "next" -> {
+                page = Math.min(lastPage(), page + 1);
+                rebuild();
+            }
+            default -> handleCardAction(ref, store, data.action);
         }
-
-        if ("previous".equals(action)) {
-            page = Math.max(0, page - 1);
-            rebuild();
-            return;
-        }
-
-        if ("next".equals(action)) {
-            page = Math.min(lastPage(), page + 1);
-            rebuild();
-            return;
-        }
-
-        if (!action.startsWith("slot:")) {
-            sendUpdate();
-            return;
-        }
-
-        int vaultId = vaultIdFromSlot(action);
-        if (!service.canSelect(session, vaultId)) {
-            sendUpdate();
-            return;
-        }
-
-        service.dismiss(session);
-        close();
-        service.openSelected(ref, store, session, vaultId);
     }
 
     @Override
     public void onDismiss(Ref<EntityStore> ref, Store<EntityStore> store) {
-        service.dismiss(session);
+        service.dismissIfCurrent(session, pageToken);
         super.onDismiss(ref, store);
+    }
+
+    private void handleCardAction(Ref<EntityStore> ref, Store<EntityStore> store, String action) {
+        if (action.startsWith("open:")) {
+            int vaultId = parseVaultId(action, "open:");
+            if (!service.canSelect(session, vaultId)) {
+                sendUpdate();
+                return;
+            }
+            service.dismiss(session);
+            close();
+            service.openSelected(ref, store, session, vaultId);
+            return;
+        }
+
+        if (action.startsWith("manage:")) {
+            int vaultId = parseVaultId(action, "manage:");
+            if (!service.canSelect(session, vaultId)) {
+                sendUpdate();
+                return;
+            }
+            if (!service.openManagement(ref, store, session, vaultId)) {
+                sendUpdate();
+            }
+            return;
+        }
+
+        sendUpdate();
     }
 
     private void bindEvents(UIEventBuilder events) {
@@ -94,64 +128,88 @@ public class VaultSelectorPage extends InteractiveCustomUIPage<VaultSelectorPage
         events.addEventBinding(CustomUIEventBindingType.Activating, "#NextButton", EventData.of("Action", "next"), false);
 
         for (int slot = 0; slot < PAGE_SIZE; slot++) {
-            events.addEventBinding(CustomUIEventBindingType.Activating, "#VaultButton" + slot, EventData.of("Action", "slot:" + slot), false);
+            events.addEventBinding(CustomUIEventBindingType.Activating, "#CardOpen" + slot, EventData.of("Action", "open:" + slot), false);
+            events.addEventBinding(CustomUIEventBindingType.Activating, "#CardManage" + slot, EventData.of("Action", "manage:" + slot), false);
         }
     }
 
     private void render(UICommandBuilder commands) {
-        setStaticTexts(commands);
-        setNavigationState(commands);
-        renderSlots(commands);
-    }
-
-    private void setStaticTexts(UICommandBuilder commands) {
         commands.set("#Title.TextSpans", Message.raw(translate("ui.selector.title")));
         commands.set("#Subtitle.TextSpans", Message.raw(translate("ui.selector.subtitle")));
-        commands.set("#RenameHint.TextSpans", Message.raw(translate("ui.selector.rename_hint")));
         commands.set("#PageLabel.TextSpans", Message.raw(translate("ui.selector.page_with_numbers", page + 1, lastPage() + 1)));
         commands.set("#CloseButton.TextSpans", Message.raw(translate("ui.selector.cancel")));
-    }
-
-    private void setNavigationState(UICommandBuilder commands) {
         commands.set("#PreviousButton.Disabled", page <= 0);
         commands.set("#NextButton.Disabled", page >= lastPage());
-    }
 
-    private void renderSlots(UICommandBuilder commands) {
-        int start = page * PAGE_SIZE + 1;
-        int vaultCount = Math.max(1, session.vaultCount());
+        int start = page * PAGE_SIZE;
         for (int slot = 0; slot < PAGE_SIZE; slot++) {
-            int vaultId = start + slot;
-            renderSlot(commands, slot, vaultId, vaultId <= vaultCount);
+            int index = start + slot;
+            renderCard(commands, slot, index < summaries.size() ? summaries.get(index) : null);
         }
     }
 
-    private void renderSlot(UICommandBuilder commands, int slot, int vaultId, boolean visible) {
-        String selector = "#VaultButton" + slot;
-        commands.set(selector + ".Visible", visible);
-        commands.set(selector + ".Disabled", !visible);
-        commands.set(selector + ".TextSpans", Message.raw(visible ? vaultText(vaultId) : ""));
-    }
+    private void renderCard(UICommandBuilder commands, int slot, VaultSummary summary) {
+        String card = "#Card" + slot;
+        boolean visible = summary != null;
+        commands.set(card + ".Visible", visible);
+        commands.set("#CardOpen" + slot + ".Disabled", !visible || summary.capacity() <= 0);
+        commands.set("#CardManage" + slot + ".Disabled", !visible || summary.capacity() <= 0);
+        if (!visible) return;
 
-    private String vaultText(int vaultId) {
-        String baseName = translate("ui.selector.vault_prefix") + " " + vaultId;
-        String customName = session.vaultName(vaultId);
-        if (customName == null || customName.isBlank()) {
-            return baseName;
+        String number = translate("ui.selector.vault_prefix") + " " + summary.vaultId();
+        boolean hasCustomName = summary.hasCustomName();
+        String color = VaultColor.mainColor(summary.colorId());
+        String accent = VaultColor.accentColor(summary.colorId());
+
+        commands.set(card + ".OutlineColor", color);
+        commands.set("#CardAccent" + slot + ".Background", color);
+        commands.set("#CardIconBadge" + slot + ".OutlineColor", accent);
+        String resolvedIconId = service.resolveIconItemId(summary.iconId());
+        boolean hasIcon = resolvedIconId != null && !resolvedIconId.isBlank();
+        commands.set("#CardIcon" + slot + ".Visible", hasIcon);
+        commands.set("#CardIconFallback" + slot + ".Visible", !hasIcon);
+        if (hasIcon) {
+            commands.set("#CardIcon" + slot + ".ItemId", resolvedIconId);
+            commands.set("#CardIcon" + slot + ".ShowItemTooltip", false);
         }
-        return baseName + "\n" + customName;
+        commands.set("#CardName" + slot + ".TextSpans", Message.raw(hasCustomName ? summary.displayName() : number));
+        commands.set("#CardNumber" + slot + ".Visible", hasCustomName);
+        if (hasCustomName) {
+            commands.set("#CardNumber" + slot + ".TextSpans", Message.raw(number));
+        }
+
+        commands.set("#CardDefaultBadge" + slot + ".Visible", summary.defaultVault());
+        commands.set("#CardDefaultBadge" + slot + ".TextSpans", Message.raw(translate("ui.selector.default")));
+        commands.set("#CardFavoriteBadge" + slot + ".Visible", summary.favorite());
+
+        String occupancy = summary.capacity() > 0
+                ? summary.occupiedVisibleSlots() + " / " + summary.capacity() + " " + translate("ui.selector.slots")
+                : translate("ui.selector.locked");
+        commands.set("#CardOccupancy" + slot + ".TextSpans", Message.raw(occupancy));
+        commands.set("#CardProgressBar" + slot + ".Bar", color);
+        commands.set("#CardProgressBar" + slot + ".Value", (float) summary.occupancyRatio());
+
+        commands.set("#CardOverflowBadge" + slot + ".Visible", summary.hasOverflow());
+        if (summary.hasOverflow()) {
+            String overflow = summary.overflowSlots() + " " + translate("ui.selector.overflow");
+            commands.set("#CardOverflowBadge" + slot + ".TextSpans", Message.raw(overflow));
+        }
+
+        commands.set("#CardOpen" + slot + ".TextSpans", Message.raw(translate("ui.selector.open")));
+        commands.set("#CardManage" + slot + ".TextSpans", Message.raw(translate("ui.selector.manage")));
     }
 
     private int lastPage() {
-        return Math.max(0, (Math.max(1, session.vaultCount()) - 1) / PAGE_SIZE);
+        return Math.max(0, (summaries.size() - 1) / PAGE_SIZE);
     }
 
-    private int vaultIdFromSlot(String action) {
+    private int parseVaultId(String action, String prefix) {
         try {
-            int slot = Integer.parseInt(action.substring("slot:".length()));
+            int slot = Integer.parseInt(action.substring(prefix.length()));
             if (slot < 0 || slot >= PAGE_SIZE) return -1;
-            return page * PAGE_SIZE + slot + 1;
-        } catch (NumberFormatException exception) {
+            int index = page * PAGE_SIZE + slot;
+            return index < summaries.size() ? summaries.get(index).vaultId() : -1;
+        } catch (NumberFormatException | IndexOutOfBoundsException exception) {
             return -1;
         }
     }

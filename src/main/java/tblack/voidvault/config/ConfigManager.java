@@ -74,6 +74,7 @@ public class ConfigManager {
         if (config.crafting == null) config.crafting = new VoidVaultConfig.Crafting();
         if (config.importer == null) config.importer = new VoidVaultConfig.Importer();
         if (config.safety == null) config.safety = new VoidVaultConfig.Safety();
+        if (config.organization == null) config.organization = new VoidVaultConfig.Organization();
         if (config.commands.aliases == null) config.commands.aliases = new ArrayList<>();
         if (config.slots.tiers == null) config.slots.tiers = new ArrayList<>();
         if (config.multiVaults.tiers == null) config.multiVaults.tiers = new ArrayList<>();
@@ -81,11 +82,31 @@ public class ConfigManager {
         if (config.crafting.benchRequirement == null) config.crafting.benchRequirement = new VoidVaultConfig.BenchRequirement();
         if (config.crafting.benchRequirement.categories == null) config.crafting.benchRequirement.categories = new ArrayList<>();
 
-        config.configVersion = "2";
+        normalizeSafety();
+        normalizeOrganization();
+        config.configVersion = "3";
         normalizeDatabase();
         normalizeCommands();
         normalizeSlots();
         normalizeMultiVaults();
+    }
+
+    private void normalizeSafety() {
+        if (config.safety.saveDebounceMillis < 100) {
+            config.safety.saveDebounceMillis = 100;
+        }
+        if (config.safety.saveMaxDelayMillis < config.safety.saveDebounceMillis) {
+            config.safety.saveMaxDelayMillis = config.safety.saveDebounceMillis;
+        }
+        if (config.safety.saveMaxDelayMillis > 30000) {
+            config.safety.saveMaxDelayMillis = 30000;
+        }
+    }
+
+    private void normalizeOrganization() {
+        if (config.organization == null) {
+            config.organization = new VoidVaultConfig.Organization();
+        }
     }
 
     private void normalizeDatabase() {

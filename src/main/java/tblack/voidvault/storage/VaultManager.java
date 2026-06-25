@@ -14,10 +14,19 @@ import com.hypixel.hytale.server.core.inventory.container.SimpleItemContainer;
 import com.hypixel.hytale.server.core.util.BsonUtil;
 import org.bson.BsonDocument;
 import tblack.voidvault.config.VoidVaultConfig;
+import tblack.voidvault.model.DepositMatchingResult;
+import tblack.voidvault.model.LoadedVault;
 import tblack.voidvault.model.SavedItem;
+import tblack.voidvault.model.SortResult;
 import tblack.voidvault.model.VaultInfo;
 import tblack.voidvault.model.VaultKey;
+import tblack.voidvault.model.VaultMetadata;
 import tblack.voidvault.permissions.PermissionService;
+import tblack.voidvault.service.HytaleItemIconCatalog;
+import tblack.voidvault.service.VaultDepositService;
+import tblack.voidvault.service.VaultIconCatalog;
+import tblack.voidvault.service.VaultMetadataService;
+import tblack.voidvault.service.VaultOrganizationService;
 import tblack.voidvault.ui.VaultSelectorService;
 import tblack.voidvault.util.VaultJson;
 
@@ -31,14 +40,21 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class VaultManager {
     private final DatabaseService database;
-    private final Map<VaultKey, ItemContainer> loadedContainers = new ConcurrentHashMap<>();
+    private final Map<VaultKey, LoadedVault> loadedVaults = new ConcurrentHashMap<>();
     private final Map<UUID, VaultKey> openVaultsByOwner = new ConcurrentHashMap<>();
     private final Set<VaultKey> changeListeners = ConcurrentHashMap.newKeySet();
     private final AtomicLong generation = new AtomicLong();
+    private final Map<VaultKey, ReentrantLock> operationLocks = new ConcurrentHashMap<>();
     private final VaultSelectorService selectorService;
+    private final VaultSaveCoordinator saveCoordinator;
+    private final VaultMetadataService metadataService;
+    private final VaultIconCatalog iconCatalog;
+    private final VaultOrganizationService organizationService;
+    private final VaultDepositService depositService;
     private PermissionService permissionService;
     private VoidVaultConfig config;
 
@@ -46,22 +62,39 @@ public class VaultManager {
         this.database = database;
         this.permissionService = permissionService;
         this.config = config;
-        this.selectorService = new VaultSelectorService(this);
+        this.saveCoordinator = new VaultSaveCoordinator(database);
+        this.iconCatalog = new HytaleItemIconCatalog();
+        this.metadataService = new VaultMetadataService(database, iconCatalog);
+        this.organizationService = new VaultOrganizationService(database);
+        this.depositService = new VaultDepositService();
+        this.selectorService = new VaultSelectorService(this, metadataService,
+                new tblack.voidvault.service.VaultSummaryService(database, permissionService, metadataService),
+                organizationService, iconCatalog);
+        this.saveCoordinator.updateTimings(config.safety.saveDebounceMillis, config.safety.saveMaxDelayMillis);
     }
 
     public void reload(PermissionService permissionService, VoidVaultConfig config) {
         saveLoaded();
         generation.incrementAndGet();
         selectorService.clearSessions();
+        iconCatalog.invalidate();
         this.permissionService = permissionService;
         this.config = config;
-        this.loadedContainers.clear();
+        this.loadedVaults.clear();
         this.openVaultsByOwner.clear();
         this.changeListeners.clear();
+        this.operationLocks.clear();
+        this.saveCoordinator.updateTimings(config.safety.saveDebounceMillis, config.safety.saveMaxDelayMillis);
     }
 
     public void openVault(Player viewer) {
-        openVault(viewer, playerUuid(viewer), DatabaseService.PRIMARY_VAULT_ID);
+        UUID ownerUuid = playerUuid(viewer);
+        if (ownerUuid == null) return;
+        int defaultVaultId = metadataService.getDefaultVaultId(ownerUuid);
+        if (!permissionService.canAccessVault(ownerUuid, defaultVaultId)) {
+            defaultVaultId = DatabaseService.PRIMARY_VAULT_ID;
+        }
+        openVault(viewer, ownerUuid, defaultVaultId);
     }
 
     public void openVault(Player viewer, int vaultId) {
@@ -162,23 +195,33 @@ public class VaultManager {
         VaultKey key = new VaultKey(ownerUuid, vaultId);
         unloadOpenVault(ownerUuid, key);
 
-        ItemContainer container = loadedContainers.computeIfAbsent(key, this::loadContainer);
+        LoadedVault loaded = loadedVaults.computeIfAbsent(key, this::loadVault);
+        ItemContainer container = loaded.container();
         int wantedSlots = permissionService.getSlots(ownerUuid);
         if (container.getCapacity() != wantedSlots) {
-            saveContainer(key, container);
-            loadedContainers.remove(key);
+            saveImmediately(key, container);
+            loadedVaults.remove(key);
             changeListeners.remove(key);
-            container = loadContainer(key);
-            loadedContainers.put(key, container);
+            loaded = loadVault(key);
+            loadedVaults.put(key, loaded);
+            container = loaded.container();
         }
 
-        registerChangeListener(key, container);
+        registerChangeListener(key, loaded);
         Window window = createWindow(container, x, y, z, rotationIndex, blockType);
-        registerCloseListener(key, container, window);
+        registerCloseListener(key, loaded, window);
         openVaultsByOwner.put(ownerUuid, key);
 
         Ref ref = viewer.getReference();
+        if (ref == null) {
+            openVaultsByOwner.remove(ownerUuid, key);
+            return;
+        }
         Store store = ref.getStore();
+        if (store == null) {
+            openVaultsByOwner.remove(ownerUuid, key);
+            return;
+        }
         viewer.getPageManager().setPageWithWindows(ref, store, Page.Bench, true, window);
     }
 
@@ -230,7 +273,7 @@ public class VaultManager {
         return new ContainerBlockWindow(x, y, z, rotationIndex, blockType, container);
     }
 
-    private void registerChangeListener(VaultKey key, ItemContainer container) {
+    private void registerChangeListener(VaultKey key, LoadedVault loaded) {
         if (!config.safety.saveOnEveryChange) {
             return;
         }
@@ -238,30 +281,31 @@ public class VaultManager {
             return;
         }
         long activeGeneration = generation.get();
-        container.registerChangeEvent(event -> {
+        loaded.container().registerChangeEvent(event -> {
             if (generation.get() != activeGeneration) {
                 return;
             }
-            saveContainer(key, container);
+            scheduleSave(key, loaded.container());
         });
     }
 
-    private void registerCloseListener(VaultKey key, ItemContainer container, Window window) {
+    private void registerCloseListener(VaultKey key, LoadedVault loaded, Window window) {
         long activeGeneration = generation.get();
         window.registerCloseEvent(event -> {
             if (generation.get() != activeGeneration) {
                 return;
             }
             if (config.safety.saveOnClose) {
-                saveContainer(key, container);
+                saveImmediately(key, loaded.container());
             }
             openVaultsByOwner.remove(key.ownerUuid(), key);
         });
     }
 
-    private ItemContainer loadContainer(VaultKey key) {
+    private LoadedVault loadVault(VaultKey key) {
         short slots = (short) permissionService.getSlots(key.ownerUuid());
         SimpleItemContainer container = new SimpleItemContainer(slots);
+        Map<Integer, SavedItem> overflow = new ConcurrentHashMap<>();
 
         try {
             Map<Integer, SavedItem> items = VaultJson.parse(database.getInventory(key.ownerUuid(), key.vaultId()));
@@ -269,11 +313,14 @@ public class VaultManager {
                 Integer slot = entry.getKey();
                 SavedItem saved = entry.getValue();
                 if (slot == null || saved == null || !saved.isValid()) continue;
-                if (slot < 0 || slot >= slots) continue;
 
-                ItemStack stack = toItemStack(saved);
-                if (stack != null) {
-                    container.setItemStackForSlot(slot.shortValue(), stack);
+                if (slot < slots) {
+                    ItemStack stack = toItemStack(saved);
+                    if (stack != null) {
+                        container.setItemStackForSlot(slot.shortValue(), stack);
+                    }
+                } else {
+                    overflow.put(slot, saved);
                 }
             }
         } catch (Exception exception) {
@@ -281,7 +328,7 @@ public class VaultManager {
             exception.printStackTrace();
         }
 
-        return container;
+        return new LoadedVault(key, container, overflow);
     }
 
     public void saveContainer(UUID uuid, ItemContainer container) {
@@ -294,39 +341,53 @@ public class VaultManager {
 
     public void saveContainer(VaultKey key, ItemContainer container) {
         if (key == null || container == null || !database.isConnected()) return;
+        scheduleSave(key, container);
+    }
 
-        try {
-            int capacity = container.getCapacity();
-            Map<Integer, SavedItem> merged = VaultJson.parse(database.getInventory(key.ownerUuid(), key.vaultId()));
+    private void scheduleSave(VaultKey key, ItemContainer container) {
+        LoadedVault loaded = loadedVaults.get(key);
+        String payload = buildSavePayload(key, loaded != null ? loaded.overflow() : Map.of(), container);
+        saveCoordinator.markDirty(key, payload);
+    }
 
-            for (int slot = 0; slot < capacity; slot++) {
-                merged.remove(slot);
-            }
-
-            for (int slot = 0; slot < capacity; slot++) {
-                ItemStack stack = container.getItemStack((short) slot);
-                if (stack == null || stack.isEmpty()) continue;
-                merged.put(slot, fromItemStack(stack));
-            }
-
-            database.saveInventory(key.ownerUuid(), key.vaultId(), VaultJson.stringify(merged));
-        } catch (Exception exception) {
-            System.err.println("[VoidVault] Failed to save vault " + key.vaultId() + " for " + key.ownerUuid() + ": " + exception.getMessage());
-            exception.printStackTrace();
+    private void saveImmediately(VaultKey key, ItemContainer container) {
+        LoadedVault loaded = loadedVaults.get(key);
+        String payload = buildSavePayload(key, loaded != null ? loaded.overflow() : Map.of(), container);
+        if (!saveCoordinator.saveNow(key, payload)) {
+            System.err.println("[VoidVault] Failed to save vault " + key.vaultId() + " for " + key.ownerUuid());
         }
     }
 
-    public void saveLoaded() {
-        for (Map.Entry<VaultKey, ItemContainer> entry : loadedContainers.entrySet()) {
-            saveContainer(entry.getKey(), entry.getValue());
+    private String buildSavePayload(VaultKey key, Map<Integer, SavedItem> overflow, ItemContainer container) {
+        int capacity = container.getCapacity();
+        Map<Integer, SavedItem> merged = new java.util.LinkedHashMap<>(overflow);
+
+        for (int slot = 0; slot < capacity; slot++) {
+            merged.remove(slot);
         }
+
+        for (int slot = 0; slot < capacity; slot++) {
+            ItemStack stack = container.getItemStack((short) slot);
+            if (stack == null || stack.isEmpty()) continue;
+            merged.put(slot, fromItemStack(stack));
+        }
+
+        return VaultJson.stringify(merged);
+    }
+
+    public void saveLoaded() {
+        for (Map.Entry<VaultKey, LoadedVault> entry : loadedVaults.entrySet()) {
+            saveImmediately(entry.getKey(), entry.getValue().container());
+        }
+        saveCoordinator.flushAll();
     }
 
     public void discardLoaded() {
         generation.incrementAndGet();
-        loadedContainers.clear();
+        loadedVaults.clear();
         openVaultsByOwner.clear();
         changeListeners.clear();
+        operationLocks.clear();
         selectorService.clearSessions();
     }
 
@@ -345,9 +406,9 @@ public class VaultManager {
     public void unloadVault(VaultKey key) {
         if (key == null) return;
 
-        ItemContainer container = loadedContainers.remove(key);
-        if (container != null) {
-            saveContainer(key, container);
+        LoadedVault loaded = loadedVaults.remove(key);
+        if (loaded != null) {
+            saveImmediately(key, loaded.container());
         }
         openVaultsByOwner.remove(key.ownerUuid(), key);
         changeListeners.remove(key);
@@ -366,7 +427,7 @@ public class VaultManager {
                 if (slot != null && slot >= slots) count++;
             }
             return count;
-        } catch (SQLException exception) {
+        } catch (SQLException | RuntimeException exception) {
             return 0;
         }
     }
@@ -403,7 +464,8 @@ public class VaultManager {
             if (vaultId == null || vaultId < 1 || vaultId > maxVaults) continue;
             boolean accessible = vaultId <= accessibleVaults;
             boolean stored = isStored(uuid, vaultId);
-            result.add(new VaultInfo(vaultId, accessible, stored, getOverflowCount(uuid, vaultId), getVaultName(uuid, vaultId)));
+            VaultMetadata meta = metadataService.get(uuid, vaultId);
+            result.add(new VaultInfo(vaultId, accessible, stored, getOverflowCount(uuid, vaultId), meta.hasCustomName() ? meta.displayName() : null));
         }
         return result;
     }
@@ -418,6 +480,84 @@ public class VaultManager {
 
     public VoidVaultConfig getConfig() {
         return config;
+    }
+
+    public VaultMetadataService getMetadataService() {
+        return metadataService;
+    }
+
+    public SortResult sortVault(UUID uuid, int vaultId) {
+        if (uuid == null || vaultId < 1 || !permissionService.canAccessVault(uuid, vaultId)) {
+            return SortResult.empty();
+        }
+
+        VaultKey key = new VaultKey(uuid, vaultId);
+        ReentrantLock lock = operationLocks.computeIfAbsent(key, ignored -> new ReentrantLock());
+        if (!lock.tryLock()) return SortResult.empty();
+
+        try {
+            LoadedVault loaded = loadedVaults.computeIfAbsent(key, this::loadVault);
+            int capacity = Math.min(permissionService.getSlots(uuid), loaded.container().getCapacity());
+            SortResult result = organizationService.sortVisibleSlots(uuid, vaultId, loaded.container(), capacity);
+            if (result.changed()) saveImmediately(key, loaded.container());
+            return result;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public DepositMatchingResult depositSimilar(UUID uuid, int vaultId) {
+        if (uuid == null || vaultId < 1 || !permissionService.canAccessVault(uuid, vaultId)) {
+            return DepositMatchingResult.empty();
+        }
+
+        Player player = findPlayer(uuid);
+        if (player == null) return DepositMatchingResult.empty();
+
+        VaultKey key = new VaultKey(uuid, vaultId);
+        ReentrantLock lock = operationLocks.computeIfAbsent(key, ignored -> new ReentrantLock());
+        if (!lock.tryLock()) return DepositMatchingResult.empty();
+
+        try {
+            LoadedVault loaded = loadedVaults.computeIfAbsent(key, this::loadVault);
+            int capacity = Math.min(permissionService.getSlots(uuid), loaded.container().getCapacity());
+            DepositMatchingResult result = depositService.depositSimilar(
+                    player,
+                    loaded.container(),
+                    capacity,
+                    config.organization.depositMatchingIncludeHotbar
+            );
+            if (result.hasMovedItems()) saveImmediately(key, loaded.container());
+            return result;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void shutdown() {
+        shutdown(true);
+    }
+
+    public void shutdown(boolean saveLoadedVaults) {
+        if (saveLoadedVaults) {
+            saveLoaded();
+        }
+        saveCoordinator.shutdown();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Player findPlayer(UUID uuid) {
+        try {
+            com.hypixel.hytale.server.core.universe.PlayerRef playerRef = com.hypixel.hytale.server.core.universe.Universe.get().getPlayer(uuid);
+            if (playerRef == null) return null;
+            Ref ref = playerRef.getReference();
+            if (ref == null) return null;
+            Store store = ref.getStore();
+            if (store == null) return null;
+            return (Player) store.getComponent(ref, Player.getComponentType());
+        } catch (Exception exception) {
+            return null;
+        }
     }
 
     private boolean isStored(UUID uuid, int vaultId) {

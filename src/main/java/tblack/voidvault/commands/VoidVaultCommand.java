@@ -71,7 +71,13 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
             return;
         }
 
-        openSelfVault(context, player, playerRef.getUuid(), DatabaseService.PRIMARY_VAULT_ID);
+        VoidVaultPlugin plugin = VoidVaultPlugin.getInstance();
+        UUID ownerUuid = playerRef.getUuid();
+        int defaultVaultId = plugin.getVaultManager().getMetadataService().getDefaultVaultId(ownerUuid);
+        if (!plugin.getVaultManager().canAccessVault(ownerUuid, defaultVaultId)) {
+            defaultVaultId = DatabaseService.PRIMARY_VAULT_ID;
+        }
+        openSelfVault(context, player, ownerUuid, defaultVaultId);
     }
 
     private boolean hasUiPermission(CommandContext context) {
@@ -259,6 +265,16 @@ public class VoidVaultCommand extends AbstractPlayerCommand {
 
             if (!hasCommandPermission(plugin, context, config.commands.uiPermission)) {
                 Chat.send(context, Chat.error(context, "messages.no_permission.ui"));
+                return;
+            }
+
+            if (value == null || value.isBlank()) {
+                UUID ownerUuid = playerRef.getUuid();
+                int defaultVaultId = plugin.getVaultManager().getMetadataService().getDefaultVaultId(ownerUuid);
+                if (!plugin.getVaultManager().canAccessVault(ownerUuid, defaultVaultId)) {
+                    defaultVaultId = DatabaseService.PRIMARY_VAULT_ID;
+                }
+                openSelfVault(context, player, ownerUuid, defaultVaultId);
                 return;
             }
 

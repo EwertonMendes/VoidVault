@@ -8,7 +8,7 @@ import java.util.List;
 public class VoidVaultConfig {
     public static final int MAX_VAULTS_LIMIT = 10_000;
 
-    public String configVersion = "2";
+    public String configVersion = "3";
     public Database database = new Database();
     public Commands commands = new Commands();
     public Slots slots = new Slots();
@@ -17,6 +17,7 @@ public class VoidVaultConfig {
     public Crafting crafting = new Crafting();
     public Importer importer = new Importer();
     public Safety safety = new Safety();
+    public Organization organization = new Organization();
 
     public static class Database {
         public String type = "sqlite";
@@ -138,6 +139,14 @@ public class VoidVaultConfig {
         public boolean saveOnEveryChange = true;
         public boolean saveOnClose = true;
         public boolean saveOnShutdown = true;
+        public long saveDebounceMillis = 750;
+        public long saveMaxDelayMillis = 5000;
+    }
+
+    public static class Organization {
+        public boolean sortEnabled = true;
+        public boolean depositMatchingEnabled = true;
+        public boolean depositMatchingIncludeHotbar = false;
     }
 
     public int clampSlots(int value) {

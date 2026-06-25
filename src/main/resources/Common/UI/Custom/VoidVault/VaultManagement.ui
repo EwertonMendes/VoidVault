@@ -1,0 +1,146 @@
+$Common = "../Common.ui";
+
+@PrimaryButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #E8FFE8), Background: #1A3A24(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #285C38(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #347448(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #7F9184), Background: #17251B(0.80))
+);
+
+@SecondaryButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #EEDCFF), Background: #251036(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #462066(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #6E35A0(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #796B86), Background: #17101E(0.80))
+);
+
+@AccentButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFE4FF), Background: #3A1A3A(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #5A2A5A(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #7A3A7A(0.98)),
+  Disabled: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #7C697C), Background: #211421(0.80))
+);
+
+
+@CloseButtonStyle = TextButtonStyle(
+  Default: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #F1E5FF), Background: #2F1644(0.98)),
+  Hovered: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #572779(0.98)),
+  Pressed: (LabelStyle: (HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true, FontSize: 13, TextColor: #FFFFFF), Background: #7538A5(0.98))
+);
+
+Group {
+  LayoutMode: Center;
+  Background: #000000(0.48);
+
+  Group #Panel {
+    Background: #0B0612(0.98);
+    OutlineColor: #7A39B4(0.60);
+    OutlineSize: 1;
+    Anchor: (Width: 680, Height: 748);
+    Padding: (Top: 20, Bottom: 20, Left: 30, Right: 30);
+    LayoutMode: Top;
+
+    Group #HeaderGlow { Anchor: (Height: 3, Bottom: 12); Background: #A550E4(0.88); }
+    Label #Title { Style: (FontSize: 29, RenderBold: true, HorizontalAlignment: Center, TextColor: #E7B2FF); Anchor: (Height: 36); Text: "Manage Vault"; }
+    Label #VaultInfo { Style: (FontSize: 14, HorizontalAlignment: Center, TextColor: #C0A8D8); Anchor: (Height: 22, Top: 2, Bottom: 10); Text: "Vault 1"; }
+
+    Group #SummaryPanel {
+      Background: #170A24(0.92); OutlineColor: #8C44CC(0.32); OutlineSize: 1;
+      Anchor: (Height: 62, Bottom: 12); Padding: (Top: 9, Bottom: 8, Left: 14, Right: 14); LayoutMode: Top;
+      Group { LayoutMode: Left; Anchor: (Height: 20, Bottom: 7);
+        Label #OccupancyLabel { Style: (FontSize: 13, TextColor: #C9B4D9); FlexWeight: 1; Anchor: (Height: 20); Text: "0 / 9 slots"; }
+        Label #OverflowLabel { Style: (FontSize: 11, RenderBold: true, HorizontalAlignment: End, TextColor: #FF8095); Anchor: (Width: 230, Height: 20); Text: ""; Visible: false; }
+      }
+      ProgressBar #OccupancyBar {
+        Anchor: (Height: 9);
+        Background: #08040D;
+        OutlineColor: #3A2348(0.72);
+        OutlineSize: 1;
+        Bar: #7A39B4;
+        Value: 0;
+      }
+    }
+
+    Group #RenameSection {
+      LayoutMode: Top; Anchor: (Height: 76, Bottom: 14);
+      Label #RenameLabel { Style: (FontSize: 13, TextColor: #A58BB9); Anchor: (Height: 18, Bottom: 6); Text: "Vault Name"; }
+      Group { LayoutMode: Left; Anchor: (Height: 36);
+        TextField #RenameField {
+          Style: $Common.@DefaultInputFieldStyle; Background: $Common.@InputBoxBackground;
+          OutlineColor: #7A39B4(0.48); OutlineSize: 1; FlexWeight: 1; Anchor: (Height: 34, Right: 10);
+          Padding: (Left: 9, Right: 9); Value: ""; PlaceholderText: "Enter a name..."; MaxLength: 15;
+        }
+        TextButton #RenameSaveButton { Style: @PrimaryButtonStyle; Anchor: (Width: 88, Height: 34, Right: 8); Text: "Save"; }
+        TextButton #RenameResetButton { Style: @SecondaryButtonStyle; Anchor: (Width: 94, Height: 34); Text: "Reset"; }
+      }
+    }
+
+    Group #AppearanceRow {
+      LayoutMode: Left; Anchor: (Height: 230, Bottom: 12);
+      Group #IconSection {
+        Background: #170A24(0.72); OutlineColor: #8C44CC(0.26); OutlineSize: 1;
+        Anchor: (Width: 320, Height: 226, Right: 12); Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12); LayoutMode: Top;
+        Label #IconLabel { Style: (FontSize: 12, TextColor: #A58BB9); Anchor: (Height: 18, Bottom: 8); Text: "Icon"; }
+        Group { LayoutMode: Left; Anchor: (Height: 86, Bottom: 12);
+          Group #IconPreviewPanel {
+            Background: #12081D; OutlineColor: #9A59D4(0.55); OutlineSize: 1;
+            Anchor: (Width: 86, Height: 82, Right: 12); LayoutMode: Center;
+            ItemIcon #SelectedIcon { Anchor: (Width: 62, Height: 58); ItemId: "VoidVault"; ShowItemTooltip: false; HitTestVisible: false; }
+          }
+          Group { LayoutMode: Top; FlexWeight: 1; Anchor: (Height: 82);
+            Label #SelectedIconName { Style: (FontSize: 12, RenderBold: true, TextColor: #F0D8FF); Anchor: (Height: 36, Bottom: 4); Text: "Default"; }
+            Label #MissingIconLabel { Style: (FontSize: 10, TextColor: #FF8095); Anchor: (Height: 42); Text: "Missing item; fallback active"; Visible: false; }
+          }
+        }
+        Group { FlexWeight: 1; }
+        TextButton #ChooseIconButton { Style: @SecondaryButtonStyle; Anchor: (Height: 36); Text: "Choose item icon"; }
+      }
+
+      Group #ColorSection {
+        Background: #170A24(0.72); OutlineColor: #8C44CC(0.26); OutlineSize: 1;
+        Anchor: (Width: 288, Height: 226); Padding: (Top: 10, Bottom: 10, Left: 12, Right: 12); LayoutMode: Top;
+        Label #ColorLabel { Style: (FontSize: 12, TextColor: #A58BB9); Anchor: (Height: 18, Bottom: 5); Text: "Color"; }
+        Label #PresetColorLabel { Style: (FontSize: 10, TextColor: #846F96); Anchor: (Height: 15, Bottom: 4); Text: "Preset"; }
+        Group { LayoutMode: Left; Anchor: (Height: 36, Bottom: 8);
+          TextButton #ColorPrev { Style: @SecondaryButtonStyle; Anchor: (Width: 34, Height: 34, Right: 7); Text: "<"; }
+          Group #ColorSwatch { Background: #7A39B4; OutlineColor: #FFFFFF(0.38); OutlineSize: 1; Anchor: (Width: 38, Height: 34, Right: 7); }
+          Label #ColorPreview { Style: (FontSize: 11, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #D8C1E8); FlexWeight: 1; Anchor: (Height: 34, Right: 7); Text: "None"; }
+          TextButton #ColorNext { Style: @SecondaryButtonStyle; Anchor: (Width: 34, Height: 34); Text: ">"; }
+        }
+        Label #CustomColorLabel { Style: (FontSize: 10, TextColor: #846F96); Anchor: (Height: 15, Bottom: 4); Text: "Custom color / HEX"; }
+        Group { LayoutMode: Left; Anchor: (Height: 34, Bottom: 8);
+          TextField #CustomColorHexField {
+            Style: $Common.@DefaultInputFieldStyle;
+            Background: $Common.@InputBoxBackground;
+            OutlineColor: #7A39B4(0.48);
+            OutlineSize: 1;
+            FlexWeight: 1;
+            Anchor: (Height: 32, Right: 7);
+            Padding: (Left: 8, Right: 8);
+            Value: "#7A39B4";
+            PlaceholderText: "#RRGGBB";
+            MaxLength: 9;
+          }
+          TextButton #CustomColorApplyButton { Style: @PrimaryButtonStyle; Anchor: (Width: 92, Height: 32); Text: "Apply"; }
+        }
+        TextButton #OpenColorPickerButton { Style: @SecondaryButtonStyle; Anchor: (Height: 36); Text: "Open color picker"; }
+      }
+    }
+
+    Group { LayoutMode: Left; Anchor: (Height: 42, Bottom: 10);
+      TextButton #FavoriteButton { Style: @AccentButtonStyle; FlexWeight: 1; Anchor: (Height: 38, Right: 12); Text: "Add to Favorites"; }
+      TextButton #DefaultButton { Style: @AccentButtonStyle; FlexWeight: 1; Anchor: (Height: 38); Text: "Set as Default"; }
+    }
+    Group { LayoutMode: Left; Anchor: (Height: 42, Bottom: 12);
+      TextButton #SortButton { Style: @SecondaryButtonStyle; FlexWeight: 1; Anchor: (Height: 38, Right: 12); Text: "Sort Vault"; }
+      TextButton #DepositButton { Style: @SecondaryButtonStyle; FlexWeight: 1; Anchor: (Height: 38); Text: "Deposit Similar"; }
+    }
+    Label #StatusLabel { Style: (FontSize: 12, HorizontalAlignment: Center, VerticalAlignment: Center, TextColor: #C9B4D9); Anchor: (Height: 28, Bottom: 10); Text: ""; }
+    Group #FooterSpacer { FlexWeight: 1; }
+    Group #BottomRow { LayoutMode: Left; Anchor: (Height: 42);
+      TextButton #BackButton { Style: @SecondaryButtonStyle; Anchor: (Width: 112, Height: 40, Right: 12); Text: "Back"; }
+      TextButton #OpenButton { Style: @PrimaryButtonStyle; FlexWeight: 1; Anchor: (Height: 40, Right: 12); Text: "Open Vault"; }
+      TextButton #CloseButton { Style: @CloseButtonStyle; Anchor: (Width: 112, Height: 40); Text: "Close"; }
+    }
+  }
+}
