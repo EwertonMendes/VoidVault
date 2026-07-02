@@ -123,7 +123,8 @@ Group {
           }
           TextButton #CustomColorApplyButton { Style: @PrimaryButtonStyle; Anchor: (Width: 92, Height: 32); Text: "Apply"; }
         }
-        TextButton #OpenColorPickerButton { Style: @SecondaryButtonStyle; Anchor: (Height: 36); Text: "Open color picker"; }
+        Group { FlexWeight: 1; }
+        TextButton #OpenColorPickerButton { Style: @SecondaryButtonStyle; Anchor: (Height: 36); Text: "Open Color Picker"; }
       }
     }
 

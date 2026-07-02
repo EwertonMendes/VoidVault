@@ -1,7 +1,7 @@
 {
   "Group": "voidvault",
   "Name": "VoidVault",
-  "Version": "0.3.0",
+  "Version": "0.3.1",
   "Description": "A cross-dimensional personal vault with card-based UI, favorites, defaults, sorting, deposit, debounce save, SQLite storage and multi-vault support.",
   "ServerVersion": "*",
   "Authors": [
